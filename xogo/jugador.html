@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Corazón do Nadal — Panel do xogador</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07122A;
+  --bg2:#0c1b3b;
+  --bg3:#12264d;
+  --border:#203a66;
+  --border-lt:#2f5088;
+  --text:#eef4fb;
+  --text-dim:#a9bfd9;
+  --text-muted:#6c86aa;
+  --love:#D2413A;
+  --love-dim:#6b1d1a;
+  --joy:#E2B663;
+  --joy-dim:#7a5a22;
+  --sad:#7fd0ff;
+  --sad-dim:#1d4f74;
+  --anger:#ff7a45;
+  --fear:#9aa8ff;
+  --surprise:#7fd0ff;
+  --calm:#9fe0c0;
+  --accent:#E2B663;
+  --accent-dim:#8a6421;
+  --green:#3fcf7a;
+  --red:#ef4f4f;
+  --gold:#E2B663;
+  --ice:#bfe9ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Manrope',sans-serif;min-height:100vh;color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 0%,rgba(127,208,255,0.16) 0%,transparent 55%),radial-gradient(ellipse at 85% 10%,rgba(63,207,122,0.10) 0%,transparent 50%),radial-gradient(ellipse at 50% 110%,rgba(210,65,58,0.12) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.neve{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.neve i{position:absolute;top:-10px;border-radius:50%;background:#fff;animation:caer linear infinite}@keyframes caer{to{transform:translate3d(40px,105vh,0)}}
+
+/* FB STATUS */
+.fb-status{position:fixed;top:12px;right:14px;z-index:99;display:flex;align-items:center;gap:6px;font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:1px;color:var(--text-muted);background:rgba(18,18,26,0.95);padding:5px 10px;border-radius:20px;border:1px solid var(--border);}
+.fb-dot{width:7px;height:7px;border-radius:50%;background:#444;transition:all 0.4s;}
+.fb-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+.fb-dot.err{background:var(--red);}
+.fb-dot.wait{background:var(--gold);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* WRAPPER */
+.wrap{position:relative;z-index:1;width:min(880px,96vw);margin:0 auto;padding:24px 0 60px;}
+
+/* CABECERA */
+.cabecera{text-align:center;padding:40px 20px 32px;position:relative;}
+.eyebrow{font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;}
+.titulo-principal{font-family:'Cinzel Decorative',serif;line-height:1.05;font-size:clamp(28px,6vw,58px);background:linear-gradient(135deg,var(--love),var(--accent),var(--joy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:8px;}
+.subtitulo{font-family:'Cinzel',serif;font-style:italic;font-size:clamp(12px,2vw,16px);color:var(--text-dim);}
+.sep{width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px auto 0;}
+
+/* ESPERA */
+#pantalla-espera{text-align:center;padding:50px 20px 60px;}
+.espera-emoji{font-size:72px;margin-bottom:24px;display:block;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.espera-titulo{font-family:'Cinzel',serif;font-size:clamp(20px,3.5vw,34px);color:var(--text);margin-bottom:12px;}
+.espera-texto{font-size:15px;color:var(--text-dim);line-height:1.8;max-width:460px;margin:0 auto 28px;}
+.espera-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-lt);padding:10px 22px;border-radius:30px;color:var(--text-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;}
+.espera-pts{display:flex;justify-content:center;gap:6px;margin-top:16px;}
+.espera-pt{width:8px;height:8px;border-radius:50%;background:var(--border-lt);animation:ep 1.4s ease-in-out infinite;}
+.espera-pt:nth-child(2){animation-delay:0.2s;}.espera-pt:nth-child(3){animation-delay:0.4s;}
+@keyframes ep{0%,100%{background:var(--border-lt);transform:scale(1)}50%{background:var(--accent);transform:scale(1.4)}}
+
+/* PAUSA */
+#pantalla-pausa{display:none;text-align:center;padding:44px 20px 50px;}
+#pantalla-pausa.show{display:block;}
+.pausa-emoji{font-size:58px;margin-bottom:18px;display:block;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.pausa-titulo{font-family:'Cinzel',serif;font-size:clamp(20px,3.5vw,32px);color:var(--text);margin-bottom:10px;}
+.pausa-texto{font-size:14px;color:var(--text-dim);font-style:italic;line-height:1.7;max-width:380px;margin:0 auto;}
+.pausa-chip{display:inline-block;border:1px dashed var(--border-lt);padding:8px 20px;margin-top:18px;color:var(--text-muted);font-size:10px;letter-spacing:3px;text-transform:uppercase;border-radius:4px;}
+
+/* JUEGO */
+#contenido-juego{display:none;}
+
+/* CRONO */
+.crono-block{margin-bottom:24px;text-align:center;}
+.crono-lbl{font-size:10px;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;}
+.crono-display{font-family:'Cinzel Decorative',serif;font-size:clamp(52px,10vw,88px);color:var(--text);letter-spacing:4px;line-height:1;transition:color 0.5s;}
+.crono-display.urgente{color:var(--anger);animation:cu 1s ease-in-out infinite;}
+.crono-display.critico{color:var(--red);animation:cc 0.5s ease-in-out infinite;}
+@keyframes cu{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes cc{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.75;transform:scale(1.03)}}
+.crono-barra{height:6px;background:var(--bg3);border-radius:3px;margin:12px auto 0;max-width:400px;overflow:hidden;}
+.crono-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--surprise),var(--accent));transition:width 1s linear,background 0.5s;border-radius:3px;}
+.crono-fill.urgente{background:linear-gradient(90deg,var(--anger),var(--fear));}
+.crono-fill.critico{background:var(--red);}
+.crono-sep{width:60px;height:1px;background:var(--border);margin:18px auto;}
+
+/* MSG MAESTRO */
+#msg-maestro-wrap{display:none;margin-bottom:18px;}
+#msg-maestro-wrap.show{display:block;animation:msgIn 0.5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes msgIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.msg-box{background:rgba(192,132,252,0.08);border:1px solid var(--accent-dim);border-left:3px solid var(--accent);padding:14px 18px;border-radius:6px;}
+.msg-lbl{font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:5px;}
+.msg-txt{font-family:'Cinzel',serif;font-style:italic;font-size:15px;color:var(--text);line-height:1.5;}
+
+/* AVISO BLOQUEO */
+.bloqueo-banner{display:none;text-align:center;padding:28px 20px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:8px;margin-bottom:16px;}
+.bloqueo-banner.show{display:block;animation:bloqueoIn 0.4s ease;}
+@keyframes bloqueoIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+.bloqueo-emoji{font-size:44px;margin-bottom:12px;display:block;animation:shake2 0.5s ease;}
+@keyframes shake2{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+.bloqueo-titulo{font-family:'Cinzel',serif;font-size:22px;color:var(--red);margin-bottom:6px;}
+.bloqueo-texto{font-size:13px;color:var(--text-dim);font-style:italic;margin-bottom:14px;}
+.bloqueo-crono{font-family:'Cinzel Decorative',serif;font-size:48px;color:var(--red);letter-spacing:3px;}
+
+/* PROGRESO */
+.prog-block{margin-bottom:24px;}
+.prog-lbl{font-size:10px;letter-spacing:3px;color:var(--text-muted);text-align:center;text-transform:uppercase;margin-bottom:8px;}
+.prog-track{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--love),var(--accent),var(--joy));width:0%;transition:width 0.9s cubic-bezier(.4,0,.2,1);border-radius:4px;}
+.prog-count{font-size:13px;color:var(--text-muted);text-align:center;margin-top:6px;}
+.prog-count span{color:var(--accent);}
+
+/* MAPA */
+.mapa-prog{display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-wrap:wrap;gap:2px;}
+.mapa-pt{width:26px;height:26px;border-radius:50%;border:2px solid var(--border-lt);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-muted);transition:all 0.4s;flex-shrink:0;}
+.mapa-pt.done{background:var(--accent-dim);border-color:var(--accent);color:var(--text);box-shadow:0 0 10px rgba(192,132,252,0.4);}
+.mapa-pt.final{width:32px;height:32px;font-size:16px;border-color:var(--love);color:var(--love);}
+.mapa-pt.final.done{background:var(--love-dim);border-color:var(--love);color:var(--text);box-shadow:0 0 14px rgba(232,67,147,0.5);}
+.mapa-ln{width:18px;height:2px;background:var(--border);transition:background 0.4s;flex-shrink:0;border-radius:1px;}
+.mapa-ln.done{background:var(--accent-dim);}
+
+/* GRID DE PRUEBAS */
+.pruebas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+@media(max-width:580px){.pruebas-grid{grid-template-columns:1fr 1fr;gap:9px;}}
+.pcard{background:var(--bg2);border:1px solid var(--border);border-radius:10px;position:relative;padding:16px 14px 14px;cursor:pointer;transition:all 0.2s;user-select:none;}
+.pcard:hover:not(.resuelta):not(.bloqueada){border-color:var(--border-lt);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+.pcard.activa{border-color:var(--accent);background:rgba(192,132,252,0.07);box-shadow:0 0 0 2px rgba(192,132,252,0.2);}
+.pcard.resuelta{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.3);cursor:default;}
+.pcard.resuelta::after{content:'✓';position:absolute;top:8px;right:10px;color:var(--green);font-size:14px;font-weight:bold;}
+.pcard.bloqueada{opacity:0.5;cursor:not-allowed;}
+.pcard-emoji{font-size:24px;margin-bottom:6px;display:block;}
+.pcard-num{font-size:9px;letter-spacing:2px;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;}
+.pcard-title{font-family:'Cinzel',serif;font-size:clamp(11px,1.4vw,14px);color:var(--text);line-height:1.3;margin-bottom:4px;}
+.pcard.resuelta .pcard-title{color:var(--green);}
+.pcard-tipo{font-size:9px;color:var(--text-muted);font-style:italic;}
+.pcard-bloq{font-size:11px;color:var(--red);font-weight:500;letter-spacing:1px;margin-top:2px;animation:blink 1s ease-in-out infinite;}
+.pcard.bloq-activo{border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.05);cursor:pointer;}
+
+/* PANEL ENTRADA */
+.panel-entrada{display:none;background:var(--bg2);border:1px solid var(--border-lt);border-radius:10px;padding:20px;margin-bottom:16px;}
+.panel-entrada.visible{display:block;animation:pe 0.3s ease;}
+@keyframes pe{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px;}
+.panel-titulo{font-family:'Cinzel',serif;font-size:18px;color:var(--text);}
+.panel-emoji{font-size:28px;}
+.panel-inst{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--accent-dim);}
+.input-fila{display:flex;gap:8px;}
+.input-code{flex:1;background:var(--bg);border:2px solid var(--border-lt);border-radius:8px;padding:12px 16px;font-family:'Cinzel Decorative',serif;font-size:22px;color:var(--text);letter-spacing:6px;text-align:center;text-transform:uppercase;outline:none;transition:border-color 0.2s;}
+.input-code:focus{border-color:var(--accent);}
+.input-code.error{border-color:var(--red);animation:shake 0.4s ease;background:rgba(239,68,68,0.05);}
+.input-code.correcto{border-color:var(--green);background:rgba(34,197,94,0.05);}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.btn-ver{background:var(--accent-dim);color:var(--text);border:none;padding:12px 20px;border-radius:8px;font-family:'Manrope',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+.btn-ver:hover{background:var(--accent);}
+.feedback{margin-top:8px;font-size:13px;min-height:18px;font-style:italic;}
+.feedback.ok{color:var(--green);}.feedback.fail{color:var(--red);}
+.intentos-info{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+.intentos-lbl{font-size:10px;letter-spacing:1px;color:var(--text-muted);}
+.intentos-dots{display:flex;gap:4px;}
+.idot{width:10px;height:10px;border-radius:50%;border:2px solid var(--border-lt);transition:all 0.3s;}
+.idot.usado{border-color:var(--red);background:var(--red);}
+.idot.libre{border-color:var(--accent-dim);}
+
+/* PISTA FINAL */
+.pista-final{display:none;border:2px solid var(--love);padding:28px 24px;margin-top:8px;background:rgba(232,67,147,0.06);text-align:center;border-radius:12px;}
+.pista-final.show{display:block;animation:finalIn 1s ease;}
+@keyframes finalIn{from{opacity:0;transform:scale(0.94);filter:blur(4px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+.pf-emoji{font-size:52px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+.pf-lbl{font-size:9px;letter-spacing:5px;color:var(--love);margin-bottom:10px;text-transform:uppercase;}
+.pf-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(18px,3vw,30px);background:linear-gradient(135deg,var(--love),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;}
+.pf-texto{font-size:14px;color:var(--text-dim);font-style:italic;line-height:1.7;max-width:520px;margin:0 auto 16px;}
+.pf-codigo{display:inline-block;font-family:'Cinzel Decorative',serif;font-size:clamp(22px,4vw,40px);color:var(--love);letter-spacing:8px;border:2px solid var(--love);padding:12px 28px;border-radius:8px;animation:glow 2.5s ease-in-out infinite;}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(232,67,147,0)}50%{box-shadow:0 0 20px rgba(232,67,147,0.3)}}
+
+/* FIN TIEMPO */
+#fin-tiempo{display:none;text-align:center;padding:40px 20px;}
+#fin-tiempo.show{display:block;}
+.fin-emoji{font-size:60px;display:block;margin-bottom:14px;}
+.fin-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,4.5vw,42px);color:var(--anger);margin-bottom:12px;}
+.fin-texto{font-size:14px;color:var(--text-dim);font-style:italic;line-height:1.7;max-width:440px;margin:0 auto;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,10,0.88);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--bg2);border:1px solid var(--border-lt);border-radius:14px;padding:34px 42px;max-width:420px;width:90%;text-align:center;animation:mp 0.4s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.modal-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(192,132,252,0.1) 0%,transparent 60%);pointer-events:none;}
+@keyframes mp{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.m-icon{font-size:46px;margin-bottom:12px;display:block;}
+.m-num{font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+.m-titulo{font-family:'Cinzel',serif;font-size:22px;color:var(--text);margin-bottom:8px;}
+.m-texto{font-size:13px;color:var(--text-dim);font-style:italic;line-height:1.6;margin-bottom:20px;}
+.btn-modal{background:var(--accent-dim);color:var(--text);border:none;padding:11px 26px;border-radius:8px;font-family:'Manrope',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;}
+.btn-modal:hover{background:var(--accent);}
+
+.pie{margin-top:30px;text-align:center;padding-top:16px;border-top:1px solid var(--border);}
+.pie-brand{font-size:10px;letter-spacing:2px;color:var(--text-muted);}
+
+.confetti-p{position:fixed;pointer-events:none;z-index:200;animation:cf 2.5s ease-in forwards;}
+@keyframes cf{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* RELOXO DO CAPITÁN */
+.btn-reloxo{display:none;width:100%;margin:0 0 14px;padding:16px;border:1px solid var(--gold);border-radius:10px;background:linear-gradient(135deg,rgba(226,182,99,.18),rgba(226,182,99,.06));color:var(--text);font-family:'Cinzel',serif;font-size:17px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:transform .15s,background .2s}
+.btn-reloxo.show{display:block}
+.btn-reloxo:active{transform:scale(.98)}
+.btn-reloxo small{display:block;margin-top:4px;font-family:'Manrope',sans-serif;font-size:11px;font-weight:500;letter-spacing:.5px;color:var(--text-dim)}
+.reloxo-estado{display:none;margin:-6px 0 14px;font-size:12px;color:var(--text-dim);text-align:center}
+.reloxo-estado.show{display:block}
+#reloxo-overlay{position:fixed;inset:0;z-index:300;background:#e9f1f6;display:none}
+#reloxo-overlay.show{display:block}
+#reloxo-overlay iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reloxo-pechar{position:absolute;top:14px;right:14px;z-index:2;padding:12px 18px;border:0;border-radius:12px;background:#0b1a33;color:#fff;font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+/* VÍDEO FINAL */
+#video-overlay{position:fixed;inset:0;z-index:400;background:#000;display:none;align-items:center;justify-content:center}
+#video-overlay.show{display:flex}
+#video-overlay video{width:100%;height:100%;object-fit:contain;background:#000}
+.video-play{position:absolute;padding:20px 34px;border:2px solid var(--gold);border-radius:14px;background:rgba(7,18,42,.85);color:var(--text);font-family:'Cinzel',serif;font-size:22px;font-weight:700;cursor:pointer;display:none}
+.video-play.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="fb-status"><div class="fb-dot wait" id="fb-dot"></div><span id="fb-lbl">Conectando...</span></div>
+<div class="neve" id="neve"></div>
+
+<div class="wrap">
+  <div class="cabecera">
+    <div class="eyebrow">Escape room de Nadal · Lugo</div>
+    <div class="titulo-principal">O Corazón<br>do Nadal</div>
+    <div class="subtitulo">O misterio do Tesouro Xeado</div>
+    <div class="sep"></div>
+  </div>
+
+  <!-- ESPERA -->
+  <div id="pantalla-espera">
+    <span class="espera-emoji">🧭</span>
+    <div class="espera-titulo">Preparando a aventura...</div>
+    <div class="espera-texto">O game master está a preparar o barco. Moi pronto comezará a vosa misión para recuperar o compás máxico.</div>
+    <div class="espera-chip">⏳ Agardando o inicio</div>
+    <div class="espera-pts"><div class="espera-pt"></div><div class="espera-pt"></div><div class="espera-pt"></div></div>
+  </div>
+
+  <!-- PAUSA -->
+  <div id="pantalla-pausa">
+    <span class="pausa-emoji">⏸️</span>
+    <div class="pausa-titulo">Tempo detido</div>
+    <div class="pausa-texto">O game master parou o xogo un momento. Tranquilidade: o xeo tamén está quieto.</div>
+    <div class="pausa-chip">⏸ Xogo en pausa</div>
+  </div>
+
+  <!-- JUEGO -->
+  <div id="contenido-juego">
+    <!-- CRONO -->
+    <div class="crono-block">
+      <div class="crono-lbl">⏱ Tempo restante</div>
+      <div class="crono-display" id="crono-j">50:00</div>
+      <div class="crono-barra"><div class="crono-fill" id="crono-fill"></div></div>
+    </div>
+    <div class="crono-sep"></div>
+
+    <!-- MSG MAESTRO -->
+    <div id="msg-maestro-wrap">
+      <div class="msg-box">
+        <div class="msg-lbl">💬 Mensaxe do game master</div>
+        <div class="msg-txt" id="msg-txt"></div>
+      </div>
+    </div>
+
+    <!-- BLOQUEO -->
+    <div class="bloqueo-banner" id="bloqueo-banner">
+      <span class="bloqueo-emoji" id="bloqueo-emoji">🔒</span>
+      <div class="bloqueo-titulo">Proba bloqueada</div>
+      <div class="bloqueo-texto" id="bloqueo-texto">Demasiados intentos fallados. Agardade antes de continuar.</div>
+      <div class="bloqueo-crono" id="bloqueo-crono">1:00</div>
+    </div>
+
+    <!-- PROGRESO -->
+    <div class="prog-block">
+      <div class="prog-lbl">Camiño cara ao compás</div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="prog-count"><span id="count-done">0</span> de <span id="count-total">9</span> probas superadas</div>
+    </div>
+
+    <!-- MAPA -->
+    <div class="mapa-prog" id="mapa-prog"></div>
+
+    <!-- PANEL ENTRADA -->
+    <div class="panel-entrada" id="panel-entrada">
+      <div class="panel-header">
+        <div class="panel-titulo" id="panel-titulo"></div>
+        <div class="panel-emoji" id="panel-emoji"></div>
+      </div>
+      <div class="panel-inst" id="panel-inst"></div>
+      <button class="btn-reloxo" id="btn-reloxo" onclick="abrirReloxo()">🕰 Abrir o reloxo do capitán<small>Dádelle corda, abrídeo e desmontade as súas pezas</small></button>
+      <div class="reloxo-estado" id="reloxo-estado"></div>
+      <div class="input-fila">
+        <input class="input-code" id="input-code" type="text" maxlength="12" placeholder="· · · · ·" autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <button class="btn-ver" onclick="verificar()">Comprobar</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="intentos-info">
+        <span class="intentos-lbl" id="intentos-lbl">Intentos dispoñibles: 3</span>
+        <div class="intentos-dots" id="intentos-dots">
+          <div class="idot libre"></div>
+          <div class="idot libre"></div>
+          <div class="idot libre"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="pruebas-grid" id="pruebas-grid"></div>
+
+    <!-- PISTA FINAL -->
+    <div class="pista-final" id="pista-final">
+      <span class="pf-emoji">🧭</span>
+      <div class="pf-lbl">✦ Revelación final ✦</div>
+      <div class="pf-titulo">Atopastes o compás máxico!</div>
+      <div class="pf-texto">Superastes todas as probas do barco. O compás revélavos a súa última mensaxe. Lédea todos xuntos en voz alta:</div>
+      <div class="pf-codigo" id="pf-codigo">O NADAL ESTÁ A SALVO</div>
+    </div>
+
+    <!-- FIN TIEMPO -->
+    <div id="fin-tiempo">
+      <span class="fin-emoji">⏰</span>
+      <div class="fin-titulo">Esgotouse o tempo!</div>
+      <div class="fin-texto">O xeo pechou o barco de novo... ata o vindeiro inverno.<br><em>O game master dirá que pasa agora.</em></div>
+    </div>
+  </div>
+
+  <div class="pie"><div class="pie-brand">O Corazón do Nadal · Concello de Lugo · Aventura en el Camino</div></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <span class="m-icon" id="m-icon">✨</span>
+    <div class="m-num" id="m-num">PROBA SUPERADA</div>
+    <div class="m-titulo" id="m-titulo"></div>
+    <div class="m-texto" id="m-texto"></div>
+    <button class="btn-modal" onclick="cerrarModal()">Continuar →</button>
+  </div>
+</div>
+
+<!-- RELOXO DO CAPITÁN (3D) -->
+<div id="reloxo-overlay">
+  <button class="reloxo-pechar" onclick="pecharReloxo()">✕ Pechar o reloxo</button>
+  <iframe id="reloxo-frame" title="O reloxo do capitán" allow="autoplay"></iframe>
+</div>
+
+<!-- VÍDEO FINAL -->
+<div id="video-overlay">
+  <video id="video-final" playsinline preload="auto"></video>
+  <button class="video-play" id="video-play" onclick="reproducirVideo(true)">▶ Ver a revelación</button>
+</div>
+
+<script>
+// neve
+(function(){const n=document.getElementById('neve');for(let i=0;i<40;i++){const f=document.createElement('i');const z=2+Math.random()*4;f.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;opacity:${.25+Math.random()*.5};animation-duration:${10+Math.random()*12}s;animation-delay:${-Math.random()*20}s`;n.appendChild(f);}})();
+</script>
+<script type="module">
+import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ══════════════════════════════════════════════
+// PROBAS DE «O CORAZÓN DO NADAL» — edita aquí
+// títulos, textos e respostas (son de EXEMPLO).
+// As respostas tamén se poden cambiar dende o
+// panel do game master sen tocar este ficheiro.
+// tipo: "contar" | "acertijo" | "reloxo"
+// A proba "reloxo" abre o reloxo 3D do capitán:
+// os 4 números que agocha saen da súa resposta.
+// ══════════════════════════════════════════════
+const PRUEBAS=[
+  {
+    id:1,
+    titulo:"Os copos de neve",
+    emoji:"❄️",
+    tipo:"contar",
+    inst:"O xeo deixou copos de neve azuis agochados por todo o barco. Buscádeos e contádeos todos. Introducide o número total.",
+    respuesta:"12",
+    ayuda:"Mirade nas paredes, debaixo das mesas e nos obxectos do barco.",
+    cel:"O xeo comeza a derreterse! O barco recoñece a súa tripulación."
+  },
+  {
+    id:2,
+    titulo:"As lanternas do barco",
+    emoji:"🏮",
+    tipo:"contar",
+    inst:"Os piratas acendían lanternas vermellas para guiarse pola noite. Contade só as vermellas, as doutras cores non contan.",
+    respuesta:"7",
+    ayuda:"Hai lanternas de varias cores. Só contan as vermellas.",
+    cel:"A luz volve ao barco. Xa podedes ver por onde ides."
+  },
+  {
+    id:3,
+    titulo:"Os agasallos roubados",
+    emoji:"🎁",
+    tipo:"contar",
+    inst:"Os piratas tamén roubaron agasallos. Contade cantos teñen o lazo dourado.",
+    respuesta:"5",
+    ayuda:"Só os de lazo dourado. Revisade tamén dentro dos baúis abertos.",
+    cel:"Os agasallos volverán ás súas casas. Seguide!"
+  },
+  {
+    id:4,
+    titulo:"A mensaxe do papagaio",
+    emoji:"🦜",
+    tipo:"acertijo",
+    inst:"O papagaio do capitán repite unha mensaxe nun pergamiño. Algunhas letras están marcadas en vermello: lédeas en orde e formaredes unha palabra.",
+    respuesta:"NORTE",
+    ayuda:"A palabra ten 5 letras e indica unha dirección.",
+    cel:"O papagaio sinala o camiño: cara ao Norte!"
+  },
+  {
+    id:5,
+    titulo:"O reloxo do capitán",
+    emoji:"🕰️",
+    tipo:"reloxo",
+    inst:"No camarote do capitán hai un reloxo de bolso xeado. Abrídeo na tablet, dádelle corda e desmontade as súas pezas: o capitán gravou un número baixo cada unha. Os puntos indican a orde.",
+    respuesta:"2612",
+    ayuda:"Hai 4 números agochados baixo o tambor, a rodaxe, o escape e o volante.",
+    cel:"Tic-tac! O tempo do capitán xa é voso."
+  },
+  {
+    id:6,
+    titulo:"O mapa do tesouro",
+    emoji:"🗺️",
+    tipo:"acertijo",
+    inst:"Hai un mapa rasgado en catro anacos. Xuntádeos e seguide a liña de puntos dende o barco: no lugar onde remata hai unha palabra escrita.",
+    respuesta:"ESTRELA",
+    ayuda:"A palabra ten 7 letras e brilla no ceo.",
+    cel:"O mapa leva cara ao ceo. A estrela guiará o compás."
+  },
+  {
+    id:7,
+    titulo:"A porta das runas",
+    emoji:"ᚱ",
+    tipo:"acertijo",
+    inst:"A porta do camarote está chea de runas. Usade a táboa de tradución que hai no cofre e descifrade a palabra gravada no centro da porta.",
+    respuesta:"AURORA",
+    ayuda:"Cada runa é unha letra. A palabra ten 6 letras.",
+    cel:"As runas brillan e a porta ábrese. O compás está preto."
+  },
+  {
+    id:8,
+    titulo:"O baúl dos piratas",
+    emoji:"🧰",
+    tipo:"acertijo",
+    inst:"O baúl ten un candado de catro cores: vermello, verde, azul e dourado. Por todo o barco hai números desas cores. Ordenádeos así e abride o baúl.",
+    respuesta:"3185",
+    ayuda:"Un número por cor, na orde vermello, verde, azul e dourado.",
+    cel:"O baúl ábrese... dentro hai algo que brilla."
+  },
+  {
+    id:9,
+    titulo:"O compás máxico",
+    emoji:"🧭",
+    tipo:"acertijo",
+    inst:"Atopastes o compás! Colocádeo no seu lugar e xirade as súas catro agullas ata que sinalen as letras correctas. Escribide a palabra que forman.",
+    respuesta:"NADAL",
+    ayuda:"A palabra ten 5 letras. Comezade pola agulla do Norte.",
+    cel:"O compás volve latexar. O xeo detense e o trineo pode voar!"
+  }
+];
+
+const DURACION = 50 * 60; // ← minutos de partida (50)
+const SESION = "navidad_lugo"; // ← documento de Firebase de esta sala (igual en maestro.html)
+const VIDEO_URL_DEFECTO = "video_final.mp4"; // ← vídeo final, na mesma carpeta
+const INTENTOS_MAX = 3;
+const BLOQUEO_SEG = 60;
+
+let db = null, unsubscribe = null;
+let estado = { resueltas: [], prueba_activa: null };
+let intentosActuales = 0, intentosPorPrueba = {};
+let juegoActivo = false, tiempoAgotado = false, pausado = false;
+let tiempoInicio = null, cronoInterval = null;
+let ultimoMsgTs = 0;
+let videoUrl = VIDEO_URL_DEFECTO, videoEstado = '', ultimoVideoCmdTs = 0, ultimoReloxoCmdTs = 0, reloxoCodigo = '';
+let reloxoInfo = {corda:false, tapa:false, marcas:[]};
+const TOTAL = () => PRUEBAS.length;
+const todasResueltas = () => estado.resueltas.length >= PRUEBAS.length;
+// bloqueo por prueba: { [id]: { restante, timer, activo } }
+let bloqueoPorPrueba = {};
+
+// ── Utilidades ──
+function norm(s){ return s.trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function setFb(st){
+  const d=document.getElementById('fb-dot'), l=document.getElementById('fb-lbl');
+  if(st==='ok'){d.className='fb-dot ok';l.textContent='Sincronizado';}
+  else if(st==='err'){d.className='fb-dot err';l.textContent='Sin conexión';}
+  else{d.className='fb-dot wait';l.textContent='Conectando...';}
+}
+
+// ── Firebase ──
+function conectar(cfg){
+  setFb('wait');
+  try{
+    getApps().forEach(a=>deleteApp(a));
+    const app=initializeApp(cfg);
+    db=getFirestore(app);
+    escuchar();
+  }catch(e){setFb('err');console.error(e);}
+}
+async function guardar(data){
+  if(!db)return;
+  try{await setDoc(doc(db,'juego',SESION),data,{merge:true});setFb('ok');}
+  catch(e){setFb('err');}
+}
+function escuchar(){
+  if(!db)return;
+  if(unsubscribe)unsubscribe();
+  unsubscribe=onSnapshot(doc(db,'juego',SESION),snap=>{
+    if(!snap.exists()){setFb('ok');return;}
+    const d=snap.data(); setFb('ok');
+    // Estado del juego
+    const eraActivo=juegoActivo, eraPausado=pausado;
+    juegoActivo=!!d.activo; tiempoAgotado=!!d.tiempo_agotado;
+    pausado=!!d.pausado;
+    estado.resueltas=d.resueltas||[];
+    intentosPorPrueba=d.intentosPorPrueba||{};
+
+    if(d.inicio_ms){
+      tiempoInicio=d.inicio_ms;
+    }else{tiempoInicio=null;}
+
+    // Sincronizar respuestas editadas por el maestro
+    if(d.respuestas){
+      PRUEBAS.forEach(p=>{ if(d.respuestas[p.id]) p.respuesta=d.respuestas[p.id]; });
+    }
+    // Sincronizar código final
+    if(d.codigo_final){
+      document.getElementById('pf-codigo').textContent=d.codigo_final;
+    }
+    // Vídeo final e ordes do game master (vídeo, reloxo)
+    if(d.video_url) videoUrl=d.video_url;
+    videoEstado=d.video_estado||'';
+    procesarOrdes(d);
+    prepararReloxo();
+
+    // Mensaje del maestro
+    const msgTxt=d.mensaje_maestro||'', msgTs=d.mensaje_ts||0;
+    const msgWrap=document.getElementById('msg-maestro-wrap');
+    if(msgTxt){
+      document.getElementById('msg-txt').textContent=msgTxt;
+      msgWrap.classList.add('show');
+      if(msgTs>ultimoMsgTs&&ultimoMsgTs>0)msgWrap.classList.add('nuevo');
+      ultimoMsgTs=msgTs;
+    }else{msgWrap.classList.remove('show','nuevo');}
+
+    render();
+  },e=>{setFb('err');console.error(e);});
+}
+
+// ── Cronómetro jugador ──
+function iniciarCrono(){
+  if(cronoInterval)clearInterval(cronoInterval);
+  cronoInterval=setInterval(()=>{
+    if(!juegoActivo||pausado||tiempoAgotado||!tiempoInicio||todasResueltas())return;
+    const elapsed=Math.floor((Date.now()-tiempoInicio)/1000);
+    const left=Math.max(0,DURACION-elapsed);
+    const m=Math.floor(left/60), s=left%60;
+    const disp=document.getElementById('crono-j');
+    disp.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const pct=left/DURACION;
+    const fill=document.getElementById('crono-fill');
+    fill.style.width=(pct*100)+'%';
+    if(pct<0.15){disp.className='crono-display critico';fill.className='crono-fill critico';}
+    else if(pct<0.3){disp.className='crono-display urgente';fill.className='crono-fill urgente';}
+    else{disp.className='crono-display';fill.className='crono-fill';}
+    if(left===0&&!tiempoAgotado){tiempoAgotado=true;render();}
+  },500);
+}
+
+// ── Render principal ──
+function render(){
+  const espera=document.getElementById('pantalla-espera');
+  const pausa=document.getElementById('pantalla-pausa');
+  const juego=document.getElementById('contenido-juego');
+  const fin=document.getElementById('fin-tiempo');
+
+  if(!juegoActivo&&!tiempoAgotado){
+    espera.style.display='block'; pausa.style.display='none';
+    juego.style.display='none'; clearInterval(cronoInterval);
+    return;
+  }
+  if(juegoActivo&&pausado){
+    espera.style.display='none'; pausa.style.display='block';
+    juego.style.display='none'; return;
+  }
+  espera.style.display='none'; pausa.style.display='none';
+  juego.style.display='block';
+  iniciarCrono();
+
+  if(tiempoAgotado){
+    fin.classList.add('show');
+    document.getElementById('pruebas-grid').style.display='none';
+    document.getElementById('panel-entrada').classList.remove('visible');
+  }else{
+    fin.classList.remove('show');
+    document.getElementById('pruebas-grid').style.display='';
+  }
+
+  renderGrid();
+  renderMapa();
+  renderProgreso();
+  renderFinal();
+}
+
+// ── Grid de pruebas ──
+function renderGrid(){
+  const g=document.getElementById('pruebas-grid'); g.innerHTML='';
+  PRUEBAS.forEach(p=>{
+    const res=estado.resueltas.includes(p.id);
+    const activa=estado.prueba_activa===p.id;
+    const bloq=bloqueoPorPrueba[p.id]?.activo;
+    let cls='pcard';
+    if(res) cls+=' resuelta';
+    else if(activa) cls+=' activa';
+    else if(bloq) cls+=' bloq-activo';
+    if(tiempoAgotado) cls+=' bloqueada';
+    const c=document.createElement('div'); c.className=cls;
+    const tiempoRestante=bloq?bloqueoPorPrueba[p.id].restante:0;
+    const minB=Math.floor(tiempoRestante/60), segB=tiempoRestante%60;
+    c.innerHTML=`<span class="pcard-emoji">${p.emoji}</span>
+      <div class="pcard-num">${String(p.id).padStart(2,'0')}</div>
+      <div class="pcard-title">${p.titulo}</div>
+      ${bloq
+        ? `<div class="pcard-bloq">🔒 ${minB}:${String(segB).padStart(2,'0')}</div>`
+        : `<div class="pcard-tipo">${p.tipo==='contar'?'🔍 Contar':p.tipo==='reloxo'?'🕰 Reloxo 3D':'🧩 Enigma'}</div>`
+      }`;
+    if(!res&&!tiempoAgotado&&!bloq) c.addEventListener('click',()=>selPrueba(p.id));
+    else if(!res&&!tiempoAgotado&&bloq) c.addEventListener('click',()=>mostrarPanelBloqueado(p));
+    g.appendChild(c);
+  });
+}
+
+function renderMapa(){
+  const m=document.getElementById('mapa-prog'); m.innerHTML='';
+  PRUEBAS.forEach((p,i)=>{
+    const done=estado.resueltas.includes(p.id);
+    const w=document.createElement('div'); w.style.cssText='display:flex;align-items:center;';
+    const pt=document.createElement('div'); pt.className='mapa-pt'+(done?' done':'');
+    pt.textContent=done?'✓':(i+1);
+    w.appendChild(pt);
+    if(i<PRUEBAS.length-1){const ln=document.createElement('div');ln.className='mapa-ln'+(done?' done':'');w.appendChild(ln);}
+    m.appendChild(w);
+  });
+  const wf=document.createElement('div'); wf.style.cssText='display:flex;align-items:center;';
+  const lf=document.createElement('div'); lf.className='mapa-ln'+(estado.resueltas.length===PRUEBAS.length?' done':'');
+  const pf=document.createElement('div'); pf.className='mapa-pt final'+(estado.resueltas.length===PRUEBAS.length?' done':'');
+  pf.textContent='🧭';
+  wf.appendChild(lf); wf.appendChild(pf); m.appendChild(wf);
+}
+
+function renderProgreso(){
+  const n=estado.resueltas.length;
+  document.getElementById('prog-fill').style.width=(n/PRUEBAS.length*100)+'%';
+  document.getElementById('count-done').textContent=n;
+  document.getElementById('count-total').textContent=PRUEBAS.length;
+}
+
+function renderFinal(){
+  const pf=document.getElementById('pista-final');
+  if(!todasResueltas()){ pf.classList.remove('show'); document.getElementById('video-overlay').classList.remove('show'); return; }
+  // a pista final só aparece cando o vídeo rematou, se saltou ou non se puido cargar
+  if(['terminado','saltado','error'].includes(videoEstado)){ if(!pf.classList.contains('show')){ pf.classList.add('show'); setTimeout(()=>pf.scrollIntoView({behavior:'smooth',block:'center'}),300); } }
+  else{ pf.classList.remove('show'); if(!document.getElementById('video-overlay').classList.contains('show')) abrirVideo(false); }
+}
+
+// ── Selección de prueba ──
+function selPrueba(id){
+  if(bloqueoPorPrueba[id]?.activo) return;
+  estado.prueba_activa=id;
+  // intentos en el ciclo actual (0-2), no el total acumulado
+  intentosActuales=bloqueoPorPrueba[id]?.intentosCiclo||0;
+  const p=PRUEBAS.find(x=>x.id===id);
+  document.getElementById('panel-titulo').textContent=`${p.titulo}`;
+  document.getElementById('panel-emoji').textContent=p.emoji;
+  document.getElementById('panel-inst').innerHTML=`${p.inst}${p.ayuda?`<br><small style="color:var(--text-muted);font-size:10px;margin-top:6px;display:block">💡 ${p.ayuda}</small>`:''}`;
+  mostrarBotonReloxo(p);
+  const inp=document.getElementById('input-code');
+  inp.value=''; inp.className='input-code';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  // quitar estado de bloqueo visual del panel
+  document.getElementById('bloqueo-banner').classList.remove('show');
+  actualizarDots(intentosActuales);
+  document.getElementById('panel-entrada').classList.add('visible');
+  setTimeout(()=>document.getElementById('panel-entrada').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  inp.focus();
+  renderGrid();
+}
+
+// Muestra en el panel que esta prueba está bloqueada
+function mostrarPanelBloqueado(p){
+  estado.prueba_activa=p.id;
+  document.getElementById('panel-titulo').textContent=p.titulo;
+  document.getElementById('panel-emoji').textContent=p.emoji;
+  document.getElementById('panel-inst').innerHTML=`${p.inst}`;
+  mostrarBotonReloxo(p);
+  document.getElementById('input-code').value='';
+  document.getElementById('input-code').className='input-code';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('panel-entrada').classList.add('visible');
+  // Mostrar banner de bloqueo con cuenta atrás de esta prueba
+  const bloq=bloqueoPorPrueba[p.id];
+  if(bloq){
+    document.getElementById('bloqueo-emoji').textContent=p.emoji;
+    document.getElementById('bloqueo-texto').textContent=`Fallastes ${INTENTOS_MAX} veces en "${p.titulo}". Agardade para tentalo de novo.`;
+    actualizarCuentaBloq(p.id);
+    document.getElementById('bloqueo-banner').classList.add('show');
+  }
+  setTimeout(()=>document.getElementById('panel-entrada').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  renderGrid();
+}
+
+function actualizarDots(usados){
+  const dots=document.getElementById('intentos-dots');
+  dots.innerHTML='';
+  for(let i=0;i<INTENTOS_MAX;i++){
+    const d=document.createElement('div');
+    d.className='idot '+(i<usados?'usado':'libre');
+    dots.appendChild(d);
+  }
+  const restantes=INTENTOS_MAX-usados;
+  document.getElementById('intentos-lbl').textContent=`Intentos restantes: ${Math.max(0,restantes)}`;
+}
+
+// ── Verificar respuesta ──
+window.verificar=async function(){
+  const p=PRUEBAS.find(x=>x.id===estado.prueba_activa); if(!p)return;
+  if(bloqueoPorPrueba[p.id]?.activo) return;
+
+  const inp=document.getElementById('input-code');
+  const val=norm(inp.value);
+  const ok=norm(p.respuesta);
+
+  intentosActuales++;
+  // Guardar intentosCiclo en el objeto de bloqueo
+  if(!bloqueoPorPrueba[p.id]) bloqueoPorPrueba[p.id]={activo:false,restante:0,timer:null,intentosCiclo:0};
+  bloqueoPorPrueba[p.id].intentosCiclo=intentosActuales;
+
+  intentosPorPrueba[p.id]=(intentosPorPrueba[p.id]||0)+1;
+  actualizarDots(intentosActuales);
+  await guardar({intentosPorPrueba});
+
+  if(val===ok){
+    inp.className='input-code correcto';
+    document.getElementById('feedback').textContent='✓ Correcto! O xeo retrocede...';
+    document.getElementById('feedback').className='feedback ok';
+    setTimeout(async()=>{
+      estado.resueltas.push(p.id); estado.prueba_activa=null;
+      delete bloqueoPorPrueba[p.id];
+      await guardar({resueltas:estado.resueltas,total_resueltas:estado.resueltas.length,intentosPorPrueba});
+      document.getElementById('panel-entrada').classList.remove('visible');
+      document.getElementById('bloqueo-banner').classList.remove('show');
+      render(); abrirModal(p); confetti();
+    },700);
+  }else{
+    inp.className='input-code error';
+    setTimeout(()=>{inp.className='input-code';},500);
+    const msgs=[
+      '✗ Non é correcto. Revisade a sala con calma.',
+      '✗ Incorrecto. Volvede ler as instrucións.',
+      '✗ Aínda non. Fixádevos nos detalles.'
+    ];
+    document.getElementById('feedback').textContent=msgs[Math.min(intentosActuales-1,msgs.length-1)];
+    document.getElementById('feedback').className='feedback fail';
+
+    if(intentosActuales>=INTENTOS_MAX){
+      activarBloqueoPrueba(p);
+    }
+  }
+};
+
+// ── Sistema de bloqueo por prueba ──
+function activarBloqueoPrueba(p){
+  if(!bloqueoPorPrueba[p.id]) bloqueoPorPrueba[p.id]={activo:false,restante:0,timer:null,intentosCiclo:0};
+  const b=bloqueoPorPrueba[p.id];
+  if(b.timer) clearInterval(b.timer);
+  b.activo=true;
+  b.restante=BLOQUEO_SEG;
+  b.intentosCiclo=0;
+
+  // Si esta prueba es la activa, mostrar banner
+  if(estado.prueba_activa===p.id){
+    document.getElementById('panel-entrada').classList.remove('visible');
+    document.getElementById('bloqueo-emoji').textContent=p.emoji;
+    document.getElementById('bloqueo-texto').textContent=`Fallastes ${INTENTOS_MAX} veces en "${p.titulo}". Agardade para tentalo de novo.`;
+    actualizarCuentaBloq(p.id);
+    document.getElementById('bloqueo-banner').classList.add('show');
+  }
+
+  renderGrid(); // actualiza la card con el candado
+
+  b.timer=setInterval(()=>{
+    b.restante--;
+    // actualizar display si es la prueba activa
+    if(estado.prueba_activa===p.id) actualizarCuentaBloq(p.id);
+    renderGrid(); // actualiza el contador en la card
+    if(b.restante<=0){
+      clearInterval(b.timer);
+      b.activo=false;
+      b.intentosCiclo=0;
+      // si es la activa, cerrar banner y reabrir panel
+      if(estado.prueba_activa===p.id){
+        document.getElementById('bloqueo-banner').classList.remove('show');
+        selPrueba(p.id);
+      }
+      renderGrid();
+    }
+  },1000);
+}
+
+function actualizarCuentaBloq(id){
+  const b=bloqueoPorPrueba[id];
+  if(!b)return;
+  const m=Math.floor(b.restante/60), s=b.restante%60;
+  document.getElementById('bloqueo-crono').textContent=`${m}:${String(s).padStart(2,'0')}`;
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&estado.prueba_activa&&!bloqueoPorPrueba[estado.prueba_activa]?.activo) window.verificar();
+});
+
+// ── Modal ──
+function abrirModal(p){
+  const todas=estado.resueltas.length===PRUEBAS.length;
+  if(todas) return; // ao rematar todo vai directo ao vídeo final
+  document.getElementById('m-icon').textContent=p.emoji;
+  document.getElementById('m-num').textContent=`PROBA ${p.id} DE ${PRUEBAS.length} SUPERADA`;
+  document.getElementById('m-titulo').textContent=p.titulo;
+  document.getElementById('m-texto').textContent=p.cel;
+  document.getElementById('modal').classList.add('show');
+}
+window.cerrarModal=function(){document.getElementById('modal').classList.remove('show');};
+
+// ── Confetti ──
+function confetti(){
+  const cols=['#E2B663','#D2413A','#3fcf7a','#7fd0ff','#ffffff','#bfe9ff'];
+  for(let i=0;i<30;i++){setTimeout(()=>{
+    const c=document.createElement('div'); c.className='confetti-p';
+    c.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};width:${6+Math.random()*7}px;height:${6+Math.random()*7}px;animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;`;
+    document.body.appendChild(c); setTimeout(()=>c.remove(),3000);
+  },i*45);}
+}
+
+// ── Ordes do game master (vídeo e reloxo) ──
+let primeiraSnap=true;
+function procesarOrdes(d){
+  if(primeiraSnap){
+    // só se executan as ordes novas, non as que xa estaban gardadas
+    ultimoVideoCmdTs=d.video_cmd_ts||0; ultimoReloxoCmdTs=d.reloxo_cmd_ts||0; primeiraSnap=false;
+  }else{
+    if((d.video_cmd_ts||0)>ultimoVideoCmdTs){
+      ultimoVideoCmdTs=d.video_cmd_ts;
+      if(d.video_cmd==='saltar') rematarVideo('saltado');
+      if(d.video_cmd==='repetir'){ videoEstado=''; abrirVideo(true); }
+    }
+    if((d.reloxo_cmd_ts||0)>ultimoReloxoCmdTs){
+      ultimoReloxoCmdTs=d.reloxo_cmd_ts;
+      if(d.reloxo_cmd==='reset') reiniciarReloxo();
+    }
+  }
+  prepararReloxo();
+}
+
+// ── Reloxo do capitán (reloxo.html dentro dun iframe) ──
+const probaReloxo=()=>PRUEBAS.find(p=>p.tipo==='reloxo');
+function prepararReloxo(){
+  const p=probaReloxo(); if(!p) return;
+  const cod=(String(p.respuesta).replace(/\D/g,'')+'0000').slice(0,4);
+  if(cod===reloxoCodigo) return;
+  reloxoCodigo=cod;
+  // os números gravados no reloxo seguen sempre a resposta da proba
+  document.getElementById('reloxo-frame').src=`reloxo.html?xogo&codigo=${cod}`;
+}
+function mostrarBotonReloxo(p){
+  const e=p.tipo==='reloxo';
+  document.getElementById('btn-reloxo').classList.toggle('show',e);
+  document.getElementById('reloxo-estado').classList.toggle('show',e);
+  pintarEstadoReloxo();
+}
+function pintarEstadoReloxo(){
+  const r=reloxoInfo, n=(r.marcas||[]).length;
+  document.getElementById('reloxo-estado').textContent=!r.corda?'❄ O reloxo segue xeado':`⏱ En marcha · marcas atopadas: ${n} de 4`;
+}
+window.abrirReloxo=function(){
+  prepararReloxo();
+  document.getElementById('reloxo-overlay').classList.add('show');
+  const f=document.getElementById('reloxo-frame');
+  const ver=()=>{try{f.contentWindow.postMessage({cmd:'ver',on:true},'*');}catch(e){}};
+  ver(); f.onload=ver; // se o reloxo aínda está a cargar, avísase ao rematar
+  guardar({reloxo_aberto:true});
+};
+window.pecharReloxo=function(){
+  document.getElementById('reloxo-overlay').classList.remove('show');
+  try{document.getElementById('reloxo-frame').contentWindow.postMessage({cmd:'ver',on:false},'*');}catch(e){}
+  guardar({reloxo_aberto:false});
+  const inp=document.getElementById('input-code'); if(inp) inp.focus();
+};
+function reiniciarReloxo(){
+  const f=document.getElementById('reloxo-frame');
+  try{f.contentWindow.postMessage({cmd:'reset'},'*');}catch(e){}
+  reloxoInfo={corda:false,tapa:false,marcas:[]};
+  pintarEstadoReloxo();
+}
+window.addEventListener('message',e=>{
+  const d=e.data; if(!d||d.tipo!=='reloxo') return;
+  reloxoInfo={corda:!!d.corda,tapa:!!d.tapa,marcas:d.marcas||[]};
+  pintarEstadoReloxo();
+  guardar({reloxo:{corda:reloxoInfo.corda,tapa:reloxoInfo.tapa,marcas:reloxoInfo.marcas,ts:Date.now()}});
+});
+
+// ── Vídeo final ──
+function abrirVideo(conXesto){
+  const ov=document.getElementById('video-overlay'), v=document.getElementById('video-final');
+  pecharReloxo && document.getElementById('reloxo-overlay').classList.remove('show');
+  document.getElementById('modal').classList.remove('show');
+  ov.classList.add('show');
+  if(!v.src.endsWith(videoUrl)) v.src=videoUrl;
+  v.currentTime=0;
+  v.onended=()=>rematarVideo('terminado');
+  v.onerror=()=>rematarVideo('error');
+  reproducirVideo(conXesto);
+}
+window.reproducirVideo=function(){
+  const v=document.getElementById('video-final'), b=document.getElementById('video-play');
+  b.classList.remove('show');
+  const pr=v.play();
+  if(pr&&pr.catch) pr.then(()=>{ if(videoEstado!=='reproduciendo'){ videoEstado='reproduciendo'; guardar({video_estado:'reproduciendo'}); } })
+    .catch(()=>{ b.classList.add('show'); });
+};
+function rematarVideo(st){
+  const ov=document.getElementById('video-overlay'), v=document.getElementById('video-final');
+  if(!ov.classList.contains('show')&&videoEstado===st) return;
+  try{v.pause();}catch(e){}
+  ov.classList.remove('show');
+  videoEstado=st;
+  guardar({video_estado:st});
+  render();
+  if(st!=='error') confetti();
+}
+
+
+// cárgase o reloxo xa ao abrir a páxina (oculto e sen debuxar) para que abra ao momento
+setTimeout(prepararReloxo,1500);
+
+// ── Arranque ──
+conectar({
+  apiKey:"AIzaSyD6WPMALoBWUPPYAkbT0MXkeUtT6tVT7F0",
+  authDomain:"escaperoomprueba.firebaseapp.com",
+  projectId:"escaperoomprueba",
+  storageBucket:"escaperoomprueba.appspot.com",
+  messagingSenderId:"370330539854",
+  appId:"1:370330539854:web:0bb275c4e1a4b1fdb8301f"
+});
+</script>
+</body>
+</html>

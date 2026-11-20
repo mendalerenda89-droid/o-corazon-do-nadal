@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Corazón do Nadal · Paneis do xogo</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#07122A;color:#eef4fb;font-family:'Manrope',sans-serif;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 0%,rgba(127,208,255,.18),transparent 55%),radial-gradient(ellipse at 85% 10%,rgba(63,207,122,.1),transparent 50%),radial-gradient(ellipse at 50% 110%,rgba(210,65,58,.14),transparent 60%)}
+.neve i{position:fixed;top:-10px;border-radius:50%;background:#fff;animation:c linear infinite}@keyframes c{to{transform:translate3d(40px,105vh,0)}}
+.w{position:relative;width:min(560px,92vw);text-align:center}
+.k{font-size:11px;letter-spacing:4px;color:#E2B663;text-transform:uppercase}
+h1{margin:12px 0 6px;font-family:'Cinzel Decorative',serif;font-size:clamp(34px,7vw,56px);line-height:1.05;color:#E2B663}
+.s{font-family:'Cinzel',serif;color:#a9bfd9;margin-bottom:34px}
+a{display:flex;align-items:center;gap:16px;text-align:left;margin-bottom:14px;padding:20px 22px;border-radius:14px;background:rgba(12,27,59,.85);border:1px solid #2f5088;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s}
+a:hover{transform:translateY(-2px);border-color:#E2B663}
+.i{font-size:34px}.t{font-size:10px;letter-spacing:3px;color:#E2B663;text-transform:uppercase}.n{font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin:2px 0}.d{font-size:13px;color:#a9bfd9}
+.f{margin-top:26px;font-size:11px;color:#6c86aa}
+</style>
+</head>
+<body>
+<div class="neve" id="neve"></div>
+<div class="w">
+  <div class="k">Escape room de Nadal · Lugo</div>
+  <h1>O Corazón<br>do Nadal</h1>
+  <div class="s">O misterio do Tesouro Xeado</div>
+  <a href="maestro.html"><span class="i">🎮</span><span><span class="t">Game master</span><span class="n" style="display:block">Panel de control</span><span class="d">Cronómetro, pruebas, reloj del capitán, vídeo final y mensajes</span></span></a>
+  <a href="jugador.html"><span class="i">🧭</span><span><span class="t">Xogadores</span><span class="n" style="display:block">Panel do xogador</span><span class="d">Para a tablet da sala: as probas e o reloxo do capitán</span></span></a>
+  <div class="f">Concello de Lugo · Casa da Xuventude · Aventura en el Camino</div>
+</div>
+<script>(function(){const n=document.getElementById('neve');for(let i=0;i<40;i++){const f=document.createElement('i');const z=2+Math.random()*4;f.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;opacity:${.25+Math.random()*.5};animation-duration:${10+Math.random()*12}s;animation-delay:${-Math.random()*20}s`;n.appendChild(f);}})();</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+O CORAZÓN DO NADAL · App del juego (Concello de Lugo)
+=====================================================
+
+Archivos (súbelos todos juntos a la misma carpeta):
+  index.html    · portada con los dos paneles
+  maestro.html  · panel del game master (tu móvil/portátil)
+  jugador.html  · panel de los jugadores (tablet de la sala)
+  reloxo.html   · el reloj 3D del capitán (lo abre jugador.html; funciona también suelto)
+  video_final.mp4 · (pon aquí tu vídeo final; si no está, se muestra la frase final directamente)
+
+Importante:
+  - Tiene que estar en una web con https (GitHub Pages o Firebase Hosting). Abierto como archivo suelto, Firebase no conecta.
+  - Usa el proyecto de Firebase "escaperoomprueba", documento juego/navidad_lugo.
+    Antes del 26 de diciembre hay que volver a permitir lectura/escritura en las reglas de Firestore de ese proyecto.
+
+Cambiar pruebas:
+  - Títulos y textos: lista PRUEBAS al principio del script de jugador.html (y los títulos en maestro.html).
+  - Respuestas: desde el panel del maestro, "Configurar respuestas" (se sincronizan solas).
+  - El reloj: su respuesta (4 cifras) son los números escondidos en el reloj. Si la cambias, el reloj se actualiza solo.
+    Orden de los puntos: Escape (1), Tambor (2), Volante (3), Rodaxe (4).
+
+Reiniciar entre grupos: botón Reset del maestro (también vuelve a congelar el reloj y borra el estado del vídeo).
