@@ -296,21 +296,41 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
   }
   if("speechSynthesis" in window){ speechSynthesis.addEventListener?.("voiceschanged",cargarVoces); cargarVoces(); }
 
+  // iOS/Android: a voz hai que «desbloqueala» cunha frase baleira durante un toque na pantalla
+  let desbloqueada=false, vozFalla=false;
+  const vivas=[];                         // referencias (Chrome pode perder as frases se non se gardan)
+  function desbloquearVoz(){
+    if(desbloqueada||!("speechSynthesis" in window)) return;
+    try{ const u=new SpeechSynthesisUtterance(" "); u.volume=0; u.lang="es-ES"; vivas.push(u); speechSynthesis.speak(u); desbloqueada=true; }catch(e){}
+  }
   function falar(texto, tipo="fala", depois){
     const my=++epoch;
     try{ speechSynthesis.cancel(); }catch(e){}
     const frases=texto.match(/[^.!?…]+[.!?…]*/g)||[texto];
     setEstado(tipo==="ben"?"ben":tipo==="mal"?"mal":"fala"); campaina(tipo);
+    if(!("speechSynthesis" in window)){ setTimeout(()=>{ if(my===epoch){ setEstado("esperto"); depois&&depois(); } },2500); return; }
     let i=0;
+    const dicir=(txt,conVoz)=>{
+      const u=new SpeechSynthesisUtterance(txt);
+      const v=conVoz&&!vozFalla?voces.find(v=>v.name===S.voz):null;
+      if(v){ u.voice=v; u.lang=v.lang; } else u.lang="es-ES";
+      u.rate=S.rate; u.pitch=S.pitch; u.volume=1;
+      let comezou=false;
+      u.onstart=()=>{ comezou=true; };
+      u.onboundary=()=>{ comezou=true; S.target=0.5+Math.random()*0.5; };
+      u.onend=()=>{ if(my===epoch) seguinte(); };
+      u.onerror=e=>{ if(my!==epoch||e.error==="interrupted"||e.error==="canceled") return;
+        if(v){ vozFalla=true; dicir(txt,false); } else seguinte(); };
+      vivas.push(u); if(vivas.length>20) vivas.splice(0,vivas.length-20);
+      try{ speechSynthesis.resume(); }catch(e){}
+      speechSynthesis.speak(u);
+      // se a voz escollida non arranca (p. ex. voz galega sen descargar), proba coa voz por defecto
+      setTimeout(()=>{ if(my===epoch&&!comezou&&v){ vozFalla=true; try{ speechSynthesis.cancel(); }catch(e){} dicir(txt,false); } },2500);
+    };
     const seguinte=()=>{
       if(my!==epoch) return;
       if(i>=frases.length){ setEstado("esperto"); depois&&depois(); return; }
-      const u=new SpeechSynthesisUtterance(frases[i++].trim());
-      const v=voces.find(v=>v.name===S.voz); if(v){ u.voice=v; u.lang=v.lang; } else u.lang="es-ES";
-      u.rate=S.rate; u.pitch=S.pitch;
-      u.onboundary=()=>{ S.target=0.5+Math.random()*0.5; };
-      u.onend=u.onerror=seguinte;
-      speechSynthesis.speak(u);
+      dicir(frases[i++].trim(),true);
     };
     setTimeout(seguinte,tipo==="ben"?700:500);
   }
@@ -322,6 +342,7 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
     if(IOS_NON_SAFARI){ onParcial(""); onFinal(null,"No iPhone/iPad só funciona en Safari. Abride esta mesma ligazón en Safari."); return; }
     if(!SR){ onParcial(""); onFinal(null,"Este dispositivo non recoñece a voz. Abride a páxina en Chrome (Android) ou Safari (iPhone)."); return; }
     if(rec){ try{rec.stop();}catch(e){} return; }
+    desbloquearVoz();
     epoch++; try{ speechSynthesis.cancel(); }catch(e){}
     iniciarMic(); campaina("escoita");
     let final="";
@@ -375,11 +396,11 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
     const l=p.querySelector("#esp-lingua"); l.value=S.lingua; l.onchange=e=>{ S.lingua=e.target.value; store.set("lingua",S.lingua); };
     const r=p.querySelector("#esp-rate"); r.value=S.rate; r.oninput=e=>{ S.rate=+e.target.value; store.set("rate",S.rate); };
     const pi=p.querySelector("#esp-pitch"); pi.value=S.pitch; pi.oninput=e=>{ S.pitch=+e.target.value; store.set("pitch",S.pitch); };
-    p.querySelector("#esp-probar").onclick=()=>falar(FRASES.saudo);
+    p.querySelector("#esp-probar").onclick=()=>{ desbloquearVoz(); vozFalla=false; falar(FRASES.saudo); };
   }
 
   async function espertar(){
-    audioCtx(); iniciarMic();
+    desbloquearVoz(); audioCtx(); iniciarMic();
     try{ if("wakeLock" in navigator){ await navigator.wakeLock.request("screen");
          document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") navigator.wakeLock.request("screen").catch(()=>{}); }); } }catch(e){}
     setEstado("esperto");
