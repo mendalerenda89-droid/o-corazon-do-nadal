@@ -169,6 +169,10 @@ const store = {
 //  O ESPÍRITO: animación + voz + escoita
 //  crearEspirito({canvas, onEstado(estadoTexto,color), onParcial(texto), escala})
 // ════════════════════════════════════════════════════════════════
+// iPhone/iPad: só Safari pode escoitar (Chrome e Firefox en iOS non teñen recoñecemento de voz)
+const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const IOS_NON_SAFARI=IOS&&/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent);
+
 export const ESTADOS = {
   durmindo:{txt:"Durmindo",  col:[127,208,255]},
   esperto: {txt:"Tocádeme e chamádeme polo meu nome", col:[127,208,255]},
@@ -180,7 +184,7 @@ export const ESTADOS = {
 };
 
 export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=true, escala=0.16, centroY=0.43}){
-  const S={estado:"durmindo", level:0, target:0, voz:store.get("voz",null), lingua:store.get("lingua","gl-ES"),
+  const S={estado:"durmindo", level:0, target:0, voz:store.get("voz",null), lingua:store.get("lingua",IOS?"es-ES":"gl-ES"),
            rate:store.get("rate",0.9), pitch:store.get("pitch",0.75)};
   let sel=null;
   const ctx=canvas.getContext("2d");
@@ -315,7 +319,8 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   let rec=null;
   function escoitar(onFinal){
-    if(!SR){ onParcial(""); onFinal(null,"Esta tablet non recoñece a voz. Abride a páxina en Chrome."); return; }
+    if(IOS_NON_SAFARI){ onParcial(""); onFinal(null,"No iPhone/iPad só funciona en Safari. Abride esta mesma ligazón en Safari."); return; }
+    if(!SR){ onParcial(""); onFinal(null,"Este dispositivo non recoñece a voz. Abride a páxina en Chrome (Android) ou Safari (iPhone)."); return; }
     if(rec){ try{rec.stop();}catch(e){} return; }
     epoch++; try{ speechSynthesis.cancel(); }catch(e){}
     iniciarMic(); campaina("escoita");
