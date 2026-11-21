@@ -22,7 +22,7 @@ Cambiar pruebas:
 Reiniciar entre grupos: botón Reset del maestro (también vuelve a congelar el reloj y borra el estado del vídeo).
 
 Idioma: todo el juego está en castellano (noviembre 2026). El nombre del evento "O Corazón do Nadal" se mantiene.
-  El vídeo final (video_final.mp4) sigue con la voz en gallego: si quieres, cámbialo por una versión en castellano con el mismo nombre.
+  El vídeo final (video_final.mp4) también está en castellano (voz es-ES-AlvaroNeural).
 
 Espíritu de la Navidad (está dentro de jugador.html; también suelto en espirito.html):
   - En la tablet abre jugador.html con Chrome (Android) o Safari (iPhone), pulsa "Despertar al espíritu" y da permiso al micrófono.
