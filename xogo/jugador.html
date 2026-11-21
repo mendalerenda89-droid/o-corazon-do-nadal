@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="gl">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O Corazón do Nadal — Panel do xogador</title>
+<title>O Corazón do Nadal — Panel del jugador</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -253,38 +253,38 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="wrap">
   <div class="cabecera">
-    <div class="eyebrow">O Corazón do Nadal · O misterio do Tesouro Xeado</div>
+    <div class="eyebrow">O Corazón do Nadal · El misterio del Tesoro Helado</div>
     <div class="esp-stage" id="esp-stage"><canvas id="esp-cv"></canvas></div>
-    <div class="esp-titulo">Espírito do Nadal</div>
-    <div class="esp-estado" id="esp-estado">Durmindo</div>
+    <div class="esp-titulo">Espíritu de la Navidad</div>
+    <div class="esp-estado" id="esp-estado">Durmiendo</div>
     <div class="esp-preg" id="esp-preg"></div>
     <div class="esp-resp" id="esp-resp"></div>
-    <div class="esp-axuda">Tocade o espírito e dicide: <b>«Solución da proba 2: sete»</b> ou <b>«As lanternas do barco, solución sete»</b><br>ou pedídelle axuda: <b>«Espírito, como pasamos á seguinte sala?»</b></div>
+    <div class="esp-axuda">Tocad el espíritu y decid: <b>«Solución de la prueba 2: siete»</b> o <b>«Los farolillos, solución siete»</b><br>o pedidle ayuda: <b>«Espíritu, ¿cómo pasamos a la siguiente sala?»</b></div>
     <div class="sep"></div>
   </div>
 
   <!-- ESPERA -->
   <div id="pantalla-espera">
     <span class="espera-emoji">🧭</span>
-    <div class="espera-titulo">Preparando a aventura...</div>
-    <div class="espera-texto">O game master está a preparar o barco. Moi pronto comezará a vosa misión para recuperar o compás máxico.</div>
-    <div class="espera-chip">⏳ Agardando o inicio</div>
+    <div class="espera-titulo">Preparando la aventura...</div>
+    <div class="espera-texto">El game master está preparando el barco. Muy pronto empezará vuestra misión para recuperar la brújula mágica.</div>
+    <div class="espera-chip">⏳ Esperando el inicio</div>
     <div class="espera-pts"><div class="espera-pt"></div><div class="espera-pt"></div><div class="espera-pt"></div></div>
   </div>
 
   <!-- PAUSA -->
   <div id="pantalla-pausa">
     <span class="pausa-emoji">⏸️</span>
-    <div class="pausa-titulo">Tempo detido</div>
-    <div class="pausa-texto">O game master parou o xogo un momento. Tranquilidade: o xeo tamén está quieto.</div>
-    <div class="pausa-chip">⏸ Xogo en pausa</div>
+    <div class="pausa-titulo">Tiempo detenido</div>
+    <div class="pausa-texto">El game master ha parado el juego un momento. Tranquilidad: el hielo también está quieto.</div>
+    <div class="pausa-chip">⏸ Juego en pausa</div>
   </div>
 
   <!-- JUEGO -->
   <div id="contenido-juego">
     <!-- CRONO -->
     <div class="crono-block">
-      <div class="crono-lbl">⏱ Tempo restante</div>
+      <div class="crono-lbl">⏱ Tiempo restante</div>
       <div class="crono-display" id="crono-j">50:00</div>
       <div class="crono-barra"><div class="crono-fill" id="crono-fill"></div></div>
     </div>
@@ -293,7 +293,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <!-- MSG MAESTRO -->
     <div id="msg-maestro-wrap">
       <div class="msg-box">
-        <div class="msg-lbl">💬 Mensaxe do game master</div>
+        <div class="msg-lbl">💬 Mensaje del game master</div>
         <div class="msg-txt" id="msg-txt"></div>
       </div>
     </div>
@@ -301,16 +301,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <!-- BLOQUEO -->
     <div class="bloqueo-banner" id="bloqueo-banner">
       <span class="bloqueo-emoji" id="bloqueo-emoji">🔒</span>
-      <div class="bloqueo-titulo">Proba bloqueada</div>
-      <div class="bloqueo-texto" id="bloqueo-texto">Demasiados intentos fallados. Agardade antes de continuar.</div>
+      <div class="bloqueo-titulo">Prueba bloqueada</div>
+      <div class="bloqueo-texto" id="bloqueo-texto">Demasiados intentos fallidos. Esperad antes de continuar.</div>
       <div class="bloqueo-crono" id="bloqueo-crono">1:00</div>
     </div>
 
     <!-- PROGRESO -->
     <div class="prog-block">
-      <div class="prog-lbl">Camiño cara ao compás</div>
+      <div class="prog-lbl">Camino hacia la brújula</div>
       <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
-      <div class="prog-count"><span id="count-done">0</span> de <span id="count-total">9</span> probas superadas</div>
+      <div class="prog-count"><span id="count-done">0</span> de <span id="count-total">9</span> pruebas superadas</div>
     </div>
 
     <!-- MAPA -->
@@ -323,7 +323,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="panel-emoji" id="panel-emoji"></div>
       </div>
       <div class="panel-inst" id="panel-inst"></div>
-      <button class="btn-reloxo" id="btn-reloxo" onclick="abrirReloxo()">🕰 Abrir o reloxo do capitán<small>Dádelle corda, abrídeo e desmontade as súas pezas</small></button>
+      <button class="btn-reloxo" id="btn-reloxo" onclick="abrirReloxo()">🕰 Abrir el reloj del capitán<small>Dadle cuerda, abridlo y desmontad sus piezas</small></button>
       <div class="reloxo-estado" id="reloxo-estado"></div>
       <div class="input-fila">
         <input class="input-code" id="input-code" type="text" maxlength="12" placeholder="· · · · ·" autocomplete="off" autocorrect="off" spellcheck="false"/>
@@ -331,7 +331,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
       <div class="feedback" id="feedback"></div>
       <div class="intentos-info">
-        <span class="intentos-lbl" id="intentos-lbl">Intentos dispoñibles: 3</span>
+        <span class="intentos-lbl" id="intentos-lbl">Intentos disponibles: 3</span>
         <div class="intentos-dots" id="intentos-dots">
           <div class="idot libre"></div>
           <div class="idot libre"></div>
@@ -347,16 +347,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="pista-final" id="pista-final">
       <span class="pf-emoji">🧭</span>
       <div class="pf-lbl">✦ Revelación final ✦</div>
-      <div class="pf-titulo">Atopastes o compás máxico!</div>
-      <div class="pf-texto">Superastes todas as probas do barco. O compás revélavos a súa última mensaxe. Lédea todos xuntos en voz alta:</div>
-      <div class="pf-codigo" id="pf-codigo">O NADAL ESTÁ A SALVO</div>
+      <div class="pf-titulo">¡Habéis encontrado la brújula mágica!</div>
+      <div class="pf-texto">Habéis superado todas las pruebas del barco. La brújula os revela su último mensaje. Leedlo todos juntos en voz alta:</div>
+      <div class="pf-codigo" id="pf-codigo">LA NAVIDAD ESTÁ A SALVO</div>
     </div>
 
     <!-- FIN TIEMPO -->
     <div id="fin-tiempo">
       <span class="fin-emoji">⏰</span>
-      <div class="fin-titulo">Esgotouse o tempo!</div>
-      <div class="fin-texto">O xeo pechou o barco de novo... ata o vindeiro inverno.<br><em>O game master dirá que pasa agora.</em></div>
+      <div class="fin-titulo">¡Se acabó el tiempo!</div>
+      <div class="fin-texto">El hielo ha cerrado el barco de nuevo... hasta el próximo invierno.<br><em>El game master os dirá qué pasa ahora.</em></div>
     </div>
   </div>
 
@@ -367,7 +367,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
     <span class="m-icon" id="m-icon">✨</span>
-    <div class="m-num" id="m-num">PROBA SUPERADA</div>
+    <div class="m-num" id="m-num">PRUEBA SUPERADA</div>
     <div class="m-titulo" id="m-titulo"></div>
     <div class="m-texto" id="m-texto"></div>
     <button class="btn-modal" onclick="cerrarModal()">Continuar →</button>
@@ -376,20 +376,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <!-- RELOXO DO CAPITÁN (3D) -->
 <div id="reloxo-overlay">
-  <button class="reloxo-pechar" onclick="pecharReloxo()">✕ Pechar o reloxo</button>
-  <iframe id="reloxo-frame" title="O reloxo do capitán" allow="autoplay"></iframe>
+  <button class="reloxo-pechar" onclick="pecharReloxo()">✕ Cerrar el reloj</button>
+  <iframe id="reloxo-frame" title="El reloj del capitán" allow="autoplay"></iframe>
 </div>
 
 <!-- VÍDEO FINAL -->
 <div id="esp-boot">
-  <div class="t">Espírito do Nadal</div>
-  <div class="s">O misterio do Tesouro Xeado</div>
-  <div class="btn">✦ ESPERTAR O ESPÍRITO ✦</div>
+  <div class="t">Espíritu de la Navidad</div>
+  <div class="s">El misterio del Tesoro Helado</div>
+  <div class="btn">✦ DESPERTAR AL ESPÍRITU ✦</div>
 </div>
 
 <div id="video-overlay">
   <video id="video-final" playsinline preload="auto"></video>
-  <button class="video-play" id="video-play" onclick="reproducirVideo(true)">▶ Ver a revelación</button>
+  <button class="video-play" id="video-play" onclick="reproducirVideo(true)">▶ Ver la revelación</button>
 </div>
 
 <script>
@@ -415,102 +415,102 @@ import { crearEspirito, decidirPista, extraPista, entradaLog, FRASES, norm as no
 const PRUEBAS=[
   {
     id:1,
-    alias:["copos","copo","neve","nieve"], // palabras para recoñecer a proba pola voz
-    titulo:"Os copos de neve",
+    alias:["copos","copo","nieve","neve"], // palabras para reconocer la prueba por voz
+    titulo:"Los copos de nieve",
     emoji:"❄️",
     tipo:"contar",
-    inst:"O xeo deixou copos de neve azuis agochados por todo o barco. Buscádeos e contádeos todos. Introducide o número total.",
+    inst:"El hielo ha dejado copos de nieve azules escondidos por todo el barco. Buscadlos y contadlos todos. Introducid el número total.",
     respuesta:"12",
-    ayuda:"Mirade nas paredes, debaixo das mesas e nos obxectos do barco.",
-    cel:"O xeo comeza a derreterse! O barco recoñece a súa tripulación."
+    ayuda:"Mirad en las paredes, debajo de las mesas y en los objetos del barco.",
+    cel:"¡El hielo empieza a derretirse! El barco reconoce a su tripulación."
   },
   {
     id:2,
-    alias:["lanternas","lanterna","linternas","linterna","farois","faroles"], // palabras para recoñecer a proba pola voz
-    titulo:"As lanternas do barco",
+    alias:["farolillos","farolillo","faroles","farol","linternas","linterna","lanternas"],
+    titulo:"Los farolillos del barco",
     emoji:"🏮",
     tipo:"contar",
-    inst:"Os piratas acendían lanternas vermellas para guiarse pola noite. Contade só as vermellas, as doutras cores non contan.",
+    inst:"Los piratas encendían farolillos rojos para guiarse por la noche. Contad solo los rojos: los de otros colores no cuentan.",
     respuesta:"7",
-    ayuda:"Hai lanternas de varias cores. Só contan as vermellas.",
-    cel:"A luz volve ao barco. Xa podedes ver por onde ides."
+    ayuda:"Hay farolillos de varios colores. Solo cuentan los rojos.",
+    cel:"La luz vuelve al barco. Ya podéis ver por dónde vais."
   },
   {
     id:3,
-    alias:["agasallos","agasallo","regalos","regalo"], // palabras para recoñecer a proba pola voz
-    titulo:"Os agasallos roubados",
+    alias:["regalos","regalo","agasallos"],
+    titulo:"Los regalos robados",
     emoji:"🎁",
     tipo:"contar",
-    inst:"Os piratas tamén roubaron agasallos. Contade cantos teñen o lazo dourado.",
+    inst:"Los piratas también robaron regalos. Contad cuántos tienen el lazo dorado.",
     respuesta:"5",
-    ayuda:"Só os de lazo dourado. Revisade tamén dentro dos baúis abertos.",
-    cel:"Os agasallos volverán ás súas casas. Seguide!"
+    ayuda:"Solo los de lazo dorado. Revisad también dentro de los baúles abiertos.",
+    cel:"Los regalos volverán a sus casas. ¡Seguid!"
   },
   {
     id:4,
-    alias:["papagaio","papagayo","loro","mensaxe","mensaje"], // palabras para recoñecer a proba pola voz
-    titulo:"A mensaxe do papagaio",
+    alias:["loro","papagayo","mensaje","papagaio"],
+    titulo:"El mensaje del loro",
     emoji:"🦜",
     tipo:"acertijo",
-    inst:"O papagaio do capitán repite unha mensaxe nun pergamiño. Algunhas letras están marcadas en vermello: lédeas en orde e formaredes unha palabra.",
+    inst:"El loro del capitán repite un mensaje en un pergamino. Algunas letras están marcadas en rojo: leedlas en orden y formaréis una palabra.",
     respuesta:"NORTE",
-    ayuda:"A palabra ten 5 letras e indica unha dirección.",
-    cel:"O papagaio sinala o camiño: cara ao Norte!"
+    ayuda:"La palabra tiene 5 letras e indica una dirección.",
+    cel:"El loro señala el camino: ¡hacia el Norte!"
   },
   {
     id:5,
-    alias:["reloxo","reloj"], // palabras para recoñecer a proba pola voz
-    titulo:"O reloxo do capitán",
+    alias:["reloj","relojes","reloxo"],
+    titulo:"El reloj del capitán",
     emoji:"🕰️",
     tipo:"reloxo",
-    inst:"No camarote do capitán hai un reloxo de bolso xeado. Abrídeo na tablet, dádelle corda e desmontade as súas pezas: o capitán gravou un número baixo cada unha. Os puntos indican a orde.",
+    inst:"En el camarote del capitán hay un reloj de bolsillo congelado. Abridlo en la tablet, dadle cuerda y desmontad sus piezas: el capitán grabó un número bajo cada una. Los puntos indican el orden.",
     respuesta:"2612",
-    ayuda:"Hai 4 números agochados baixo o tambor, a rodaxe, o escape e o volante.",
-    cel:"Tic-tac! O tempo do capitán xa é voso."
+    ayuda:"Hay 4 números escondidos bajo el tambor, el rodaje, el escape y el volante.",
+    cel:"¡Tic-tac! El tiempo del capitán ya es vuestro."
   },
   {
     id:6,
-    alias:["mapa","tesouro","tesoro"], // palabras para recoñecer a proba pola voz
-    titulo:"O mapa do tesouro",
+    alias:["mapa","tesoro","tesouro"],
+    titulo:"El mapa del tesoro",
     emoji:"🗺️",
     tipo:"acertijo",
-    inst:"Hai un mapa rasgado en catro anacos. Xuntádeos e seguide a liña de puntos dende o barco: no lugar onde remata hai unha palabra escrita.",
-    respuesta:"ESTRELA",
-    ayuda:"A palabra ten 7 letras e brilla no ceo.",
-    cel:"O mapa leva cara ao ceo. A estrela guiará o compás."
+    inst:"Hay un mapa roto en cuatro trozos. Juntadlos y seguid la línea de puntos desde el barco: en el lugar donde termina hay una palabra escrita.",
+    respuesta:"ESTRELLA",
+    ayuda:"La palabra tiene 8 letras y brilla en el cielo.",
+    cel:"El mapa lleva hacia el cielo. La estrella guiará a la brújula."
   },
   {
     id:7,
-    alias:["runas","runa"], // palabras para recoñecer a proba pola voz
-    titulo:"A porta das runas",
+    alias:["runas","runa","puerta"],
+    titulo:"La puerta de las runas",
     emoji:"ᚱ",
     tipo:"acertijo",
-    inst:"A porta do camarote está chea de runas. Usade a táboa de tradución que hai no cofre e descifrade a palabra gravada no centro da porta.",
+    inst:"La puerta del camarote está llena de runas. Usad la tabla de traducción que hay en el cofre y descifrad la palabra grabada en el centro de la puerta.",
     respuesta:"AURORA",
-    ayuda:"Cada runa é unha letra. A palabra ten 6 letras.",
-    cel:"As runas brillan e a porta ábrese. O compás está preto."
+    ayuda:"Cada runa es una letra. La palabra tiene 6 letras.",
+    cel:"Las runas brillan y la puerta se abre. La brújula está cerca."
   },
   {
     id:8,
-    alias:["baul","baules","candado","piratas"], // palabras para recoñecer a proba pola voz
-    titulo:"O baúl dos piratas",
+    alias:["baul","baules","candado","piratas"],
+    titulo:"El baúl de los piratas",
     emoji:"🧰",
     tipo:"acertijo",
-    inst:"O baúl ten un candado de catro cores: vermello, verde, azul e dourado. Por todo o barco hai números desas cores. Ordenádeos así e abride o baúl.",
+    inst:"El baúl tiene un candado de cuatro colores: rojo, verde, azul y dorado. Por todo el barco hay números de esos colores. Ordenadlos así y abrid el baúl.",
     respuesta:"3185",
-    ayuda:"Un número por cor, na orde vermello, verde, azul e dourado.",
-    cel:"O baúl ábrese... dentro hai algo que brilla."
+    ayuda:"Un número por color, en el orden rojo, verde, azul y dorado.",
+    cel:"El baúl se abre... dentro hay algo que brilla."
   },
   {
     id:9,
-    alias:["compas","agullas","agujas"], // palabras para recoñecer a proba pola voz
-    titulo:"O compás máxico",
+    alias:["brujula","brujulas","agujas","compas"],
+    titulo:"La brújula mágica",
     emoji:"🧭",
     tipo:"acertijo",
-    inst:"Atopastes o compás! Colocádeo no seu lugar e xirade as súas catro agullas ata que sinalen as letras correctas. Escribide a palabra que forman.",
-    respuesta:"NADAL",
-    ayuda:"A palabra ten 5 letras. Comezade pola agulla do Norte.",
-    cel:"O compás volve latexar. O xeo detense e o trineo pode voar!"
+    inst:"¡Habéis encontrado la brújula! Colocadla en su sitio y girad sus cuatro agujas hasta que señalen las letras correctas. Escribid la palabra que forman.",
+    respuesta:"NAVIDAD",
+    ayuda:"La palabra tiene 7 letras. Empezad por la aguja del Norte.",
+    cel:"La brújula vuelve a latir. ¡El hielo se detiene y el trineo puede volar!"
   }
 ];
 
@@ -577,11 +577,12 @@ function escuchar(){
 
     // Sincronizar respuestas editadas por el maestro
     if(d.respuestas){
-      PRUEBAS.forEach(p=>{ if(d.respuestas[p.id]) p.respuesta=d.respuestas[p.id]; });
+      const M={ESTRELA:'ESTRELLA',NADAL:'NAVIDAD'};
+      PRUEBAS.forEach(p=>{ const r=d.respuestas[p.id]; if(r) p.respuesta=M[String(r).toUpperCase()]||r; });
     }
     // Sincronizar código final
     if(d.codigo_final){
-      document.getElementById('pf-codigo').textContent=d.codigo_final;
+      document.getElementById('pf-codigo').textContent=d.codigo_final==='O NADAL ESTÁ A SALVO'?'LA NAVIDAD ESTÁ A SALVO':d.codigo_final;
     }
     // Vídeo final e ordes do game master (vídeo, reloxo)
     if(d.video_url) videoUrl=d.video_url;
@@ -680,7 +681,7 @@ function renderGrid(){
       <div class="pcard-title">${p.titulo}</div>
       ${bloq
         ? `<div class="pcard-bloq">🔒 ${minB}:${String(segB).padStart(2,'0')}</div>`
-        : `<div class="pcard-tipo">${p.tipo==='contar'?'🔍 Contar':p.tipo==='reloxo'?'🕰 Reloxo 3D':'🧩 Enigma'}</div>`
+        : `<div class="pcard-tipo">${p.tipo==='contar'?'🔍 Contar':p.tipo==='reloxo'?'🕰 Reloj 3D':'🧩 Enigma'}</div>`
       }`;
     if(!res&&!tiempoAgotado&&!bloq) c.addEventListener('click',()=>selPrueba(p.id));
     else if(!res&&!tiempoAgotado&&bloq) c.addEventListener('click',()=>mostrarPanelBloqueado(p));
@@ -760,7 +761,7 @@ function mostrarPanelBloqueado(p){
   const bloq=bloqueoPorPrueba[p.id];
   if(bloq){
     document.getElementById('bloqueo-emoji').textContent=p.emoji;
-    document.getElementById('bloqueo-texto').textContent=`Fallastes ${INTENTOS_MAX} veces en "${p.titulo}". Agardade para tentalo de novo.`;
+    document.getElementById('bloqueo-texto').textContent=`Habéis fallado ${INTENTOS_MAX} veces en "${p.titulo}". Esperad para volver a intentarlo.`;
     actualizarCuentaBloq(p.id);
     document.getElementById('bloqueo-banner').classList.add('show');
   }
@@ -800,7 +801,7 @@ window.verificar=async function(){
 
   if(val===ok){
     inp.className='input-code correcto';
-    document.getElementById('feedback').textContent='✓ Correcto! O xeo retrocede...';
+    document.getElementById('feedback').textContent='✓ ¡Correcto! El hielo retrocede...';
     document.getElementById('feedback').className='feedback ok';
     setTimeout(async()=>{
       estado.resueltas.push(p.id); estado.prueba_activa=null;
@@ -815,9 +816,9 @@ window.verificar=async function(){
     inp.className='input-code error';
     setTimeout(()=>{inp.className='input-code';},500);
     const msgs=[
-      '✗ Non é correcto. Revisade a sala con calma.',
-      '✗ Incorrecto. Volvede ler as instrucións.',
-      '✗ Aínda non. Fixádevos nos detalles.'
+      '✗ No es correcto. Revisad la sala con calma.',
+      '✗ Incorrecto. Volved a leer las instrucciones.',
+      '✗ Todavía no. Fijaos en los detalles.'
     ];
     document.getElementById('feedback').textContent=msgs[Math.min(intentosActuales-1,msgs.length-1)];
     document.getElementById('feedback').className='feedback fail';
@@ -841,7 +842,7 @@ function activarBloqueoPrueba(p){
   if(estado.prueba_activa===p.id){
     document.getElementById('panel-entrada').classList.remove('visible');
     document.getElementById('bloqueo-emoji').textContent=p.emoji;
-    document.getElementById('bloqueo-texto').textContent=`Fallastes ${INTENTOS_MAX} veces en "${p.titulo}". Agardade para tentalo de novo.`;
+    document.getElementById('bloqueo-texto').textContent=`Habéis fallado ${INTENTOS_MAX} veces en "${p.titulo}". Esperad para volver a intentarlo.`;
     actualizarCuentaBloq(p.id);
     document.getElementById('bloqueo-banner').classList.add('show');
   }
@@ -883,7 +884,7 @@ function abrirModal(p){
   const todas=estado.resueltas.length===PRUEBAS.length;
   if(todas) return; // ao rematar todo vai directo ao vídeo final
   document.getElementById('m-icon').textContent=p.emoji;
-  document.getElementById('m-num').textContent=`PROBA ${p.id} DE ${PRUEBAS.length} SUPERADA`;
+  document.getElementById('m-num').textContent=`PRUEBA ${p.id} DE ${PRUEBAS.length} SUPERADA`;
   document.getElementById('m-titulo').textContent=p.titulo;
   document.getElementById('m-texto').textContent=p.cel;
   document.getElementById('modal').classList.add('show');
@@ -938,7 +939,7 @@ function mostrarBotonReloxo(p){
 }
 function pintarEstadoReloxo(){
   const r=reloxoInfo, n=(r.marcas||[]).length;
-  document.getElementById('reloxo-estado').textContent=!r.corda?'❄ O reloxo segue xeado':`⏱ En marcha · marcas atopadas: ${n} de 4`;
+  document.getElementById('reloxo-estado').textContent=!r.corda?'❄ El reloj sigue congelado':`⏱ En marcha · marcas encontradas: ${n} de 4`;
 }
 window.abrirReloxo=function(){
   prepararReloxo();
@@ -1049,11 +1050,11 @@ const ARTIGOS=new Set(['o','a','os','as','el','la','los','las','un','una','unha'
 const PAL_SOL=['solucion','solucions','soluciones','clave','codigo','resposta','respuesta','contrasinal','contrasena','resultado'];
 function posPalabra(t,w){ w=normE(w); const m=(' '+t+' ').indexOf(' '+w+' '); return m; }
 const RECHEO=new Set(['a','o','os','as','el','la','los','las','da','de','del','do','das','dela','para','proba','prueba','probas','pruebas',
-  'numero','espirito','espiritu','nadal','navidad','e','es','son','sera','seria','que','pois','pues','ola','hola']);
+  'numero','espirito','espiritu','e','es','son','sera','seria','que','pois','pues','ola','hola']);
 const NUM_RE='(\\d+|un|unha|una|uno|dous|dos|tres|catro|cuatro|cinco|seis|sete|siete|oito|ocho|nove|nueve)';
 function soNumeros(txt){ const w=txt.split(' ').filter(Boolean); return w.length>0&&w.every(x=>/^\d+$/.test(x)||NUMS[x]!==undefined); }
 function limpar(txt,proba){
-  let r=' '+txt+' ';
+  let r=' '+txt.replace(/\bespirit[ou]\s+(de\s+la\s+navidad|do\s+nadal)\b/g,' ')+' ';
   r=r.replace(new RegExp('\\b(proba|prueba)\\s+(numero\\s+)?'+NUM_RE+'\\b','g'),' ');
   const fora=new Set([...RECHEO, ...(proba?normE(proba.titulo).split(' '):[]), ...(proba?(proba.alias||[]).map(normE):[])]);
   return r.split(' ').filter(w=>w&&!fora.has(w)).join(' ').trim();
@@ -1153,7 +1154,7 @@ $e('esp-boot').addEventListener('click',async()=>{
   espBooted=true; $e('esp-boot').classList.add('gone');
   try{ await document.documentElement.requestFullscreen(); }catch(e){}
   await esp.espertar();
-  espAmosar('','Tocádeme e chamádeme polo meu nome…');
+  espAmosar('','Tocadme y llamadme por mi nombre…');
 });
 $e('esp-stage').addEventListener('click',()=>{
   if(!espBooted) return;

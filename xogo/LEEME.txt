@@ -21,15 +21,18 @@ Cambiar pruebas:
 
 Reiniciar entre grupos: botón Reset del maestro (también vuelve a congelar el reloj y borra el estado del vídeo).
 
-Espírito do Nadal (está dentro de jugador.html; también suelto en espirito.html):
-  - En la tablet abre jugador.html con Chrome (Android), pulsa "Espertar o espírito" y da permiso al micrófono.
-  - Solo se ven las pruebas que faltan. Para responder: tocar el espíritu y decir
-    "Espírito, a solución da proba do reloxo é 2612" (o "Espíritu, la solución de la prueba del reloj es 2612").
-    Si es correcta la tarjeta se pone verde y desaparece; si no: "Clave incorrecta, volvede probar".
-    3 fallos seguidos → la prueba se bloquea 1 minuto (igual que escribiendo).
-  - También da pistas: "Espírito, como pasamos á seguinte sala?" o "Espírito, unha pista para as runas".
+Idioma: todo el juego está en castellano (noviembre 2026). El nombre del evento "O Corazón do Nadal" se mantiene.
+  El vídeo final (video_final.mp4) sigue con la voz en gallego: si quieres, cámbialo por una versión en castellano con el mismo nombre.
+
+Espíritu de la Navidad (está dentro de jugador.html; también suelto en espirito.html):
+  - En la tablet abre jugador.html con Chrome (Android) o Safari (iPhone), pulsa "Despertar al espíritu" y da permiso al micrófono.
+  - Solo se ven las pruebas que faltan. Para responder basta con tocar el espíritu y decir, por ejemplo:
+    "Solución de la prueba 2: siete"  ·  "Los farolillos, solución siete"  ·  "La solución del reloj es 2612"
+    Si es correcta: la tarjeta se pone verde y desaparece y el espíritu da la enhorabuena con el nombre de la prueba.
+    Si no: "Clave incorrecta, volved a probar". 3 fallos seguidos → la prueba se bloquea 1 minuto.
+  - Pistas (hay que llamarlo): "Espíritu, ¿cómo pasamos a la siguiente sala?" o "Espíritu, una pista para las runas".
   - Para reconocer cada prueba por voz: campo "alias" de cada prueba en jugador.html.
   - Pistas y frases del espíritu: espirito-core.js (son de EJEMPLO).
   - Tocando una tarjeta se sigue pudiendo escribir la respuesta (y abrir el reloj 3D).
   - Desde el maestro: ver lo que dicen, fijar la prueba de las pistas, silenciarlo o hacer que diga una frase.
-  - Voz: ⚙ abajo a la derecha (mejor instalar la voz "Galego" de Google en la tablet).
+  - Voz: ⚙ abajo a la derecha.

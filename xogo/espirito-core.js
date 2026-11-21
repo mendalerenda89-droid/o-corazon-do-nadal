@@ -15,60 +15,60 @@ export const MAX_PISTAS = 6;                       // pistas por partida (0 = si
 
 export const PISTAS = {
   1: { pistas: [
-        "O frío agóchase onde ninguén mira. Os copos azuis tamén viven debaixo das cousas.",
-        "Non vos quededes nas paredes: mirade debaixo das mesas e dentro dos obxectos do barco.",
-        "Contade con calma, que o xeo é traizoeiro: son máis de dez, pero non chegan a quince." ] },
+        "El frío se esconde donde nadie mira. Los copos azules también viven debajo de las cosas.",
+        "No os quedéis en las paredes: mirad debajo de las mesas y dentro de los objetos del barco.",
+        "Contad con calma, que el hielo es traicionero: son más de diez, pero no llegan a quince." ] },
   2: { pistas: [
-        "Non todas as luces din a verdade. Só as vermellas guiaban aos piratas.",
-        "Contade unha a unha as lanternas vermellas e esquecede as doutras cores.",
-        "Mirade tamén as lanternas pequenas. O número que buscades é impar." ] },
+        "No todas las luces dicen la verdad. Solo las rojas guiaban a los piratas.",
+        "Contad uno a uno los farolillos rojos y olvidad los de otros colores.",
+        "Mirad también los farolillos pequeños. El número que buscáis es impar." ] },
   3: { pistas: [
-        "Os agasallos que buscades levan ouro no lazo.",
-        "Algúns agasallos agóchanse dentro dos baúis abertos.",
-        "Contade só os de lazo dourado: son menos dos que pensades." ] },
+        "Los regalos que buscáis llevan oro en el lazo.",
+        "Algunos regalos se esconden dentro de los baúles abiertos.",
+        "Contad solo los de lazo dorado: son menos de los que pensáis." ] },
   4: { pistas: [
-        "O papagaio fala en vermello. Escoitade só esas letras.",
-        "Lede as letras vermellas en orde, coma quen le un libro.",
-        "A palabra sinala cara a onde apuntan as agullas de todos os compases." ] },
+        "El loro habla en rojo. Escuchad solo esas letras.",
+        "Leed las letras rojas en orden, como quien lee un libro.",
+        "La palabra señala hacia donde apuntan las agujas de todas las brújulas." ] },
   5: { pistas: [
-        "O tempo do capitán está xeado. Primeiro, dádelle corda ao reloxo.",
-        "Abride a tapa e desmontade as pezas: baixo cada unha hai un número.",
-        "Os puntos din a orde: escape, tambor, volante e rodaxe." ],
+        "El tiempo del capitán está congelado. Primero, dadle cuerda al reloj.",
+        "Abrid la tapa y desmontad las piezas: bajo cada una hay un número.",
+        "Los puntos dicen el orden: escape, tambor, volante y rodaje." ],
        preguntas: [
         { claves: [["reloxo","reloj"],["segredo","secreto","garda","guarda"]],
-          resposta: "O reloxo do capitán garda catro segredos, un baixo cada peza. Ningún tic-tac é casualidade." } ] },
+          resposta: "El reloj del capitán guarda cuatro secretos, uno bajo cada pieza. Ningún tic-tac es casualidad." } ] },
   6: { pistas: [
-        "Un mapa roto non leva a ningures. Xuntade os seus catro anacos.",
-        "Seguide a liña de puntos que sae do barco ata onde remata.",
-        "A palabra que buscades brilla no ceo cada noite." ],
+        "Un mapa roto no lleva a ninguna parte. Juntad sus cuatro trozos.",
+        "Seguid la línea de puntos que sale del barco hasta donde termina.",
+        "La palabra que buscáis brilla en el cielo cada noche." ],
        preguntas: [
         { claves: [["estrela","estrella"]],
-          resposta: "Si... a estrela. Buscádea onde morre a liña de puntos do mapa." } ] },
+          resposta: "Sí... la estrella. Buscadla donde muere la línea de puntos del mapa." } ] },
   7: { pistas: [
-        "As runas non son debuxos: cada unha garda unha letra.",
-        "No cofre hai unha táboa que traduce as runas. Usádea.",
-        "Descifrade só as runas do centro da porta: son seis letras, coma unha luz do norte." ] },
+        "Las runas no son dibujos: cada una guarda una letra.",
+        "En el cofre hay una tabla que traduce las runas. Usadla.",
+        "Descifrad solo las runas del centro de la puerta: son seis letras, como una luz del norte." ] },
   8: { pistas: [
-        "O baúl só entende catro cores: vermello, verde, azul e dourado.",
-        "Polo barco hai números pintados desas cores. Buscade un de cada.",
-        "A orde é esta: primeiro o vermello, logo o verde, despois o azul e por último o dourado." ] },
+        "El baúl solo entiende cuatro colores: rojo, verde, azul y dorado.",
+        "Por el barco hay números pintados de esos colores. Buscad uno de cada.",
+        "El orden es este: primero el rojo, luego el verde, después el azul y por último el dorado." ] },
   9: { pistas: [
-        "O compás quere volver ao seu sitio. Colocádeo onde latexa o barco.",
-        "Xirade as catro agullas ata que sinalen letras.",
-        "Comezade pola agulla do Norte. A palabra é o que celebramos estes días." ],
+        "La brújula quiere volver a su sitio. Colocadla donde late el barco.",
+        "Girad las cuatro agujas hasta que señalen letras.",
+        "Empezad por la aguja del Norte. La palabra es lo que celebramos estos días." ],
        preguntas: [
         { claves: [["agulla","aguja"],["norte"]],
-          resposta: "A agulla do Norte é a primeira letra. As demais seguen o camiño do sol." } ] },
+          resposta: "La aguja del Norte es la primera letra. Las demás siguen el camino del sol." } ] },
   final: { pistas: [
-        "Conseguístelo, tripulación! O corazón do Nadal volve latexar. Mirade o vídeo: alí está a última clave." ] }
+        "¡Lo habéis conseguido, tripulación! El corazón de la Navidad vuelve a latir. Mirad el vídeo: ahí está la última clave." ] }
 };
 
 // Preguntas que funcionan en cualquier prueba
 export const PREGUNTAS_SEMPRE = [
   { claves: [["quen es","quien eres","como te chamas","como te llamas"]],
-    resposta: "Son o Espírito do Nadal. Durmo no corazón deste barco dende que o xeo o atrapou." },
+    resposta: "Soy el Espíritu de la Navidad. Duermo en el corazón de este barco desde que el hielo lo atrapó." },
   { claves: [["canto tempo","cuanto tiempo"]],
-    resposta: "O tempo corre coma a neve que derrete. Non o perdades preguntándome iso!" }
+    resposta: "El tiempo corre como la nieve que se derrite. ¡No lo perdáis preguntándome eso!" }
 ];
 
 // Palabras que cuentan como «pedir ayuda para avanzar»
@@ -77,33 +77,32 @@ export const AVANCE = ["seguinte","siguiente","pasar","pasamos","avanzar","avanz
   "que tenemos que","porta","puerta","sala","abrir","abrimos","conseguimos","conseguir","resolver","non sabemos","no sabemos","onde","donde"];
 
 export const FRASES = {
-  sen_nome: ["Escoito voces... pero ninguén me chamou polo meu nome.",
-             "Quen fala? Se queredes a miña axuda, chamádeme polo meu nome.",
-             "Os espíritos só responden a quen os nomea."],
-  non_entendo: ["Esa non é a pregunta que abre o meu corazón. Preguntádeme como seguir.",
-                "Hmm... as túas palabras pérdense na neve. Pedídeme axuda para avanzar.",
-                "Non entendo esa pregunta, tripulación. Probade doutro xeito."],
-  saudo: "Ola, tripulación. Son o Espírito do Nadal. Se estades perdidos, preguntádeme como seguir.",
-  sen_pistas: "Xa vos dei toda a axuda que podía. Agora o Nadal depende de vós.",
-  so_clave: "Para esta proba non abonda con pedir axuda. Buscade a pregunta correcta.",
-  repetir_prefixo: "Xa volo dixen: ",
-  dormindo: "Shhh... aínda durmo. Espertarei cando comece a aventura.",
-  pausado: "O tempo está detido. Agardade un momento.",
-  tempo_esgotado: "O xeo gañou esta vez... pero o Nadal sempre volve.",
-  // respuestas (panel do xogador)
-  // Al acertar. {proba} = nombre de la prueba. Después se añade la frase de celebración de la prueba.
-  correcta: ["Clave correcta! Noraboa, tripulación: superastes a proba «{proba}».",
-             "Clave correcta! Moi ben! A proba «{proba}» xa é vosa.",
-             "Clave correcta! Noraboa por superar «{proba}»."],
-  correcta_ultima: "Clave correcta! Noraboa, tripulación: superastes a última proba, «{proba}». O corazón do Nadal volve latexar!",
-  incorrecta: ["Clave incorrecta. Volvede probar.",
-               "Clave incorrecta. Revisade ben e volvede probar.",
-               "Non, non é esa. Volvede probar, tripulación."],
-  bloqueada: "Clave incorrecta. Fallastes demasiadas veces: o xeo bloquea esta proba un minuto.",
-  xa_bloqueada: "Esta proba segue conxelada. Agardade {s} segundos.",
-  xa_resolta: "Esa proba xa a superastes. Seguide coas demais!",
-  cal_proba: "De que proba me falades? Dicídeme o seu nome e a solución.",
-  sen_solucion: "Non escoitei a solución. Dicídeme, por exemplo: solución da proba 2, sete.",
+  sen_nome: ["Oigo voces... pero nadie me ha llamado por mi nombre.",
+             "¿Quién habla? Si queréis mi ayuda, llamadme por mi nombre.",
+             "Los espíritus solo responden a quien los nombra."],
+  non_entendo: ["Esa no es la pregunta que abre mi corazón. Preguntadme cómo seguir.",
+                "Mmm... vuestras palabras se pierden en la nieve. Pedidme ayuda para avanzar.",
+                "No entiendo esa pregunta, tripulación. Probad de otra forma."],
+  saudo: "Hola, tripulación. Soy el Espíritu de la Navidad. Si estáis perdidos, preguntadme cómo seguir.",
+  sen_pistas: "Ya os he dado toda la ayuda que podía. Ahora la Navidad depende de vosotros.",
+  so_clave: "Para esta prueba no basta con pedir ayuda. Buscad la pregunta correcta.",
+  repetir_prefixo: "Ya os lo dije: ",
+  dormindo: "Shhh... todavía duermo. Despertaré cuando empiece la aventura.",
+  pausado: "El tiempo está detenido. Esperad un momento.",
+  tempo_esgotado: "Esta vez ha ganado el hielo... pero la Navidad siempre vuelve.",
+  // respuestas (panel del jugador). {proba} = nombre de la prueba; después se añade su frase de celebración.
+  correcta: ["¡Clave correcta! Enhorabuena, tripulación: habéis superado la prueba «{proba}».",
+             "¡Clave correcta! ¡Muy bien! La prueba «{proba}» ya es vuestra.",
+             "¡Clave correcta! Enhorabuena por superar «{proba}»."],
+  correcta_ultima: "¡Clave correcta! Enhorabuena, tripulación: habéis superado la última prueba, «{proba}». ¡El corazón de la Navidad vuelve a latir!",
+  incorrecta: ["Clave incorrecta. Volved a probar.",
+               "Clave incorrecta. Revisad bien y volved a probar.",
+               "No, no es esa. Volved a probar, tripulación."],
+  bloqueada: "Clave incorrecta. Habéis fallado demasiadas veces: el hielo bloquea esta prueba un minuto.",
+  xa_bloqueada: "Esta prueba sigue congelada. Esperad {s} segundos.",
+  xa_resolta: "Esa prueba ya la habéis superado. ¡Seguid con las demás!",
+  cal_proba: "¿De qué prueba me habláis? Decidme su número y la solución.",
+  sen_solucion: "No he oído la solución. Decidme, por ejemplo: solución de la prueba 2, siete.",
 };
 // ════════════════════════════════════════════════════════════════
 
@@ -174,17 +173,17 @@ const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="M
 const IOS_NON_SAFARI=IOS&&/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent);
 
 export const ESTADOS = {
-  durmindo:{txt:"Durmindo",  col:[127,208,255]},
-  esperto: {txt:"Tocádeme e chamádeme polo meu nome", col:[127,208,255]},
-  escoita: {txt:"Escoitando…", col:[90,240,160]},
-  pensa:   {txt:"O espírito pensa…", col:[226,182,99]},
-  fala:    {txt:"O espírito fala", col:[200,235,255]},
+  durmindo:{txt:"Durmiendo",  col:[127,208,255]},
+  esperto: {txt:"Tocadme y llamadme por mi nombre", col:[127,208,255]},
+  escoita: {txt:"Escuchando…", col:[90,240,160]},
+  pensa:   {txt:"El espíritu piensa…", col:[226,182,99]},
+  fala:    {txt:"El espíritu habla", col:[200,235,255]},
   ben:     {txt:"Clave correcta!", col:[63,207,122]},
   mal:     {txt:"Clave incorrecta", col:[255,110,95]}
 };
 
 export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=true, escala=0.16, centroY=0.43}){
-  const S={estado:"durmindo", level:0, target:0, voz:store.get("voz",null), lingua:store.get("lingua",IOS?"es-ES":"gl-ES"),
+  const S={estado:"durmindo", level:0, target:0, voz:store.get("voz2",null), lingua:store.get("lingua2","es-ES"),
            rate:store.get("rate",0.9), pitch:store.get("pitch",0.75)};
   let sel=null;
   const ctx=canvas.getContext("2d");
@@ -289,8 +288,8 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
   // voz
   let voces=[], epoch=0;
   function cargarVoces(){
-    const pv=v=>(/^gl/i.test(v.lang)?10:0)+(/^es[-_]ES/i.test(v.lang)?3:0)+(/natural|online|neural|google/i.test(v.name)?1:0);
-    voces=speechSynthesis.getVoices().filter(v=>/^(gl|es)/i.test(v.lang)).sort((a,b)=>pv(b)-pv(a));
+    const pv=v=>(/^es[-_]ES/i.test(v.lang)?10:/^es/i.test(v.lang)?5:0)+(/natural|online|neural|google/i.test(v.name)?1:0);
+    voces=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)).sort((a,b)=>pv(b)-pv(a));
     if(!(S.voz&&voces.some(v=>v.name===S.voz)) && voces[0]) S.voz=voces[0].name;
     if(sel) encherVoces();
   }
@@ -339,8 +338,8 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   let rec=null;
   function escoitar(onFinal){
-    if(IOS_NON_SAFARI){ onParcial(""); onFinal(null,"No iPhone/iPad só funciona en Safari. Abride esta mesma ligazón en Safari."); return; }
-    if(!SR){ onParcial(""); onFinal(null,"Este dispositivo non recoñece a voz. Abride a páxina en Chrome (Android) ou Safari (iPhone)."); return; }
+    if(IOS_NON_SAFARI){ onParcial(""); onFinal(null,"En iPhone/iPad solo funciona en Safari. Abrid este mismo enlace en Safari."); return; }
+    if(!SR){ onParcial(""); onFinal(null,"Este dispositivo no reconoce la voz. Abrid la página en Chrome (Android) o Safari (iPhone)."); return; }
     if(rec){ try{rec.stop();}catch(e){} return; }
     desbloquearVoz();
     epoch++; try{ speechSynthesis.cancel(); }catch(e){}
@@ -354,8 +353,8 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
     };
     let erro=null;
     rec.onerror=e=>{
-      if(e.error==="not-allowed"||e.error==="service-not-allowed") erro="Necesito permiso para o micrófono.";
-      else if(e.error==="network") erro="Sen internet non podo escoitar.";
+      if(e.error==="not-allowed"||e.error==="service-not-allowed") erro="Necesito permiso para el micrófono.";
+      else if(e.error==="network") erro="Sin internet no puedo escuchar.";
     };
     rec.onend=()=>{ rec=null; const t=final.trim(); if(t) onFinal(t); else { setEstado("esperto"); if(erro) onFinal(null,erro); } };
     try{ rec.start(); setEstado("escoita"); onParcial(""); }catch(e){ rec=null; }
@@ -365,7 +364,7 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
   function encherVoces(){
     sel.innerHTML="";
     voces.forEach(v=>{ const o=document.createElement("option"); o.value=v.name; o.textContent=`${v.name} (${v.lang})`; sel.appendChild(o); });
-    if(!voces.length){ const o=document.createElement("option"); o.textContent="Sen voces en galego nin castelán"; sel.appendChild(o); }
+    if(!voces.length){ const o=document.createElement("option"); o.textContent="No hay voces en castellano"; sel.appendChild(o); }
     if(S.voz) sel.value=S.voz;
   }
   function engadirAxustes(){
@@ -380,20 +379,20 @@ export function crearEspirito({canvas, onEstado=()=>{}, onParcial=()=>{}, ceo=tr
 #esp-panel button{flex:1;padding:9px;border-radius:8px;border:1px solid #2f5088;background:#0c1b3b;color:#eef4fb;cursor:pointer}
 #esp-panel p{margin-top:10px;color:#a9bfd9;font-size:12px;line-height:1.5}`;
     document.head.appendChild(css);
-    const g=document.createElement("button"); g.id="esp-gear"; g.textContent="⚙"; g.setAttribute("aria-label","Axustes da voz");
+    const g=document.createElement("button"); g.id="esp-gear"; g.textContent="⚙"; g.setAttribute("aria-label","Ajustes de la voz");
     const p=document.createElement("div"); p.id="esp-panel";
     p.innerHTML=`<label>Voz</label><select id="esp-voz"></select>
-      <label>Idioma que escoita</label><select id="esp-lingua"><option value="gl-ES">Galego (gl-ES)</option><option value="es-ES">Castelán (es-ES)</option></select>
-      <label>Velocidade</label><input type="range" id="esp-rate" min="0.6" max="1.3" step="0.05">
-      <label>Ton</label><input type="range" id="esp-pitch" min="0.3" max="1.5" step="0.05">
-      <div class="b"><button id="esp-probar">🔊 Probar</button><button id="esp-pechar">Pechar</button></div>
-      <p>Para voz galega: Axustes de Android → Texto a voz → Google → instalar «Galego». Se non, usa unha voz en castelán.</p>`;
+      <label>Idioma que escucha</label><select id="esp-lingua"><option value="es-ES">Castellano (es-ES)</option><option value="gl-ES">Gallego (gl-ES)</option></select>
+      <label>Velocidad</label><input type="range" id="esp-rate" min="0.6" max="1.3" step="0.05">
+      <label>Tono</label><input type="range" id="esp-pitch" min="0.3" max="1.5" step="0.05">
+      <div class="b"><button id="esp-probar">🔊 Probar</button><button id="esp-pechar">Cerrar</button></div>
+      <p>Si no habla: sube el volumen multimedia, quita el modo silencio y prueba otra voz.</p>`;
     document.body.append(g,p);
     sel=p.querySelector("#esp-voz"); encherVoces();
     g.onclick=e=>{ e.stopPropagation(); p.classList.toggle("open"); };
     p.querySelector("#esp-pechar").onclick=()=>p.classList.remove("open");
-    sel.onchange=e=>{ S.voz=e.target.value; store.set("voz",S.voz); };
-    const l=p.querySelector("#esp-lingua"); l.value=S.lingua; l.onchange=e=>{ S.lingua=e.target.value; store.set("lingua",S.lingua); };
+    sel.onchange=e=>{ S.voz=e.target.value; store.set("voz2",S.voz); };
+    const l=p.querySelector("#esp-lingua"); l.value=S.lingua; l.onchange=e=>{ S.lingua=e.target.value; store.set("lingua2",S.lingua); };
     const r=p.querySelector("#esp-rate"); r.value=S.rate; r.oninput=e=>{ S.rate=+e.target.value; store.set("rate",S.rate); };
     const pi=p.querySelector("#esp-pitch"); pi.value=S.pitch; pi.oninput=e=>{ S.pitch=+e.target.value; store.set("pitch",S.pitch); };
     p.querySelector("#esp-probar").onclick=()=>{ desbloquearVoz(); vozFalla=false; falar(FRASES.saudo); };

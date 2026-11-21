@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="gl">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex">
-<title>Espírito do Nadal · O Corazón do Nadal</title>
+<title>Espíritu de la Navidad · O Corazón do Nadal</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--ice:#7fd0ff;--gold:#E2B663;--txt:#eef4fb;--dim:#a9bfd9}
@@ -44,17 +44,17 @@ canvas{position:fixed;inset:0;width:100%;height:100%}
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="top"><div class="k">O Corazón do Nadal</div><div class="t">Espírito do Nadal</div></div>
+<div id="top"><div class="k">O Corazón do Nadal</div><div class="t">Espíritu de la Navidad</div></div>
 <div id="center">
-  <div id="estado">Durmindo</div>
+  <div id="estado">Durmiendo</div>
   <div id="pregunta"></div>
-  <div id="resposta">Tocade o espírito e chamádeo polo seu nome…</div>
+  <div id="resposta">Tocad el espíritu y llamadlo por su nombre…</div>
 </div>
 <div id="fb"><i></i><span id="fb-l">Conectando</span></div>
 <div id="boot">
-  <div class="t">Espírito do Nadal</div>
-  <div class="s">O misterio do Tesouro Xeado</div>
-  <div class="btn">✦ ESPERTAR O ESPÍRITO ✦</div>
+  <div class="t">Espíritu de la Navidad</div>
+  <div class="s">El misterio del Tesoro Helado</div>
+  <div class="btn">✦ DESPERTAR AL ESPÍRITU ✦</div>
 </div>
 
 <script type="module">
@@ -95,7 +95,7 @@ function rexistrar(p,r,tipo,fase,nivel,extra={}){
 }
 
 async function gardar(data){ if(!db) return; try{ await setDoc(doc(db,"juego",SESION),data,{merge:true}); fb("ok"); }catch(e){ fb("err"); } }
-function fb(st){ $("fb").className=st; $("fb-l").textContent= st==="ok"?"Sincronizado":st==="err"?"Sen conexión":"Conectando"; }
+function fb(st){ $("fb").className=st; $("fb-l").textContent= st==="ok"?"Sincronizado":st==="err"?"Sin conexión":"Conectando"; }
 let ultimoCmd=0, primeiro=true;
 function conectar(cfg){
   try{
@@ -116,7 +116,7 @@ $("boot").onclick=async()=>{
   booted=true; $("boot").classList.add("gone");
   try{ await document.documentElement.requestFullscreen(); }catch(e){}
   await esp.espertar();
-  amosar("","Tocade o espírito e chamádeo polo seu nome…");
+  amosar("","Tocad el espíritu y llamadlo por su nombre…");
 };
 $("cv").addEventListener("click",()=>{ if(booted) esp.escoitar((t,erro)=>{ if(t) responder(t); else if(erro) amosar(null,erro); }); });
 

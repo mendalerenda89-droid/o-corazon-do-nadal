@@ -313,7 +313,7 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
 
   <!-- ESPÍRITO DO NADAL -->
   <div class="sec">
-    <div class="sec-title">✨ Espírito do Nadal · respuestas y pistas por voz</div>
+    <div class="sec-title">✨ Espíritu de la Navidad · respuestas y pistas por voz</div>
     <div class="rx-grid">
       <div class="rx-card"><div class="rx-lbl">Prueba en la que ayuda</div><div class="rx-val" id="es-fase">—</div></div>
       <div class="rx-card"><div class="rx-lbl">Pistas dadas</div><div class="rx-val" id="es-pistas">0</div></div>
@@ -325,7 +325,7 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
       <button class="btn-preset" id="es-mudo-btn" onclick="espiritoMudo()">🔇 Silenciar espíritu</button>
     </div>
     <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-      <input class="msg-input" id="es-texto" type="text" maxlength="200" placeholder="Haz que el espíritu diga algo en voz alta (en gallego)..." style="flex:1;min-width:220px">
+      <input class="msg-input" id="es-texto" type="text" maxlength="200" placeholder="Haz que el espíritu diga algo en voz alta ..." style="flex:1;min-width:220px">
       <button class="btn-enviar" onclick="espiritoFalar()">🔊 Que lo diga</button>
     </div>
     <div class="es-log" id="es-log"><div class="es-vacio">Todavía no le han preguntado nada.</div></div>
@@ -347,12 +347,12 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
   <div class="sec">
     <div class="sec-title">💬 Enviar mensaje / pista al jugador</div>
     <div class="msg-presets">
-      <button class="btn-preset" onclick="preset('Queda pouco tempo! O xeo avanza, concentrádevos.')">⚠ Urgencia</button>
-      <button class="btn-preset" onclick="preset('Moi ben, tripulación! Seguide así.')">💪 Ánimo</button>
-      <button class="btn-preset" onclick="preset('Fixádevos nas cores: non todo o que brilla conta.')">🎨 Pista colores</button>
-      <button class="btn-preset" onclick="preset('O reloxo do capitán garda catro números: contade os puntos.')">🕰 Pista reloj</button>
-      <button class="btn-preset" onclick="preset('Buscade na parte de arriba do barco.')">🔍 Pista ubicación</button>
-      <button class="btn-preset" onclick="preset('A resposta ten exactamente 5 letras.')">✏️ Pista longitud</button>
+      <button class="btn-preset" onclick="preset('¡Queda poco tiempo! El hielo avanza, concentraos.')">⚠ Urgencia</button>
+      <button class="btn-preset" onclick="preset('¡Muy bien, tripulación! Seguid así.')">💪 Ánimo</button>
+      <button class="btn-preset" onclick="preset('Fijaos en los colores: no todo lo que brilla cuenta.')">🎨 Pista colores</button>
+      <button class="btn-preset" onclick="preset('El reloj del capitán guarda cuatro números: contad los puntos.')">🕰 Pista reloj</button>
+      <button class="btn-preset" onclick="preset('Buscad en la parte de arriba del barco.')">🔍 Pista ubicación</button>
+      <button class="btn-preset" onclick="preset('La respuesta tiene exactamente 5 letras.')">✏️ Pista longitud</button>
     </div>
     <div class="msg-fila">
       <input class="msg-input" id="msg-input" type="text" maxlength="140" placeholder="Escribe una pista (en gallego) para los jugadores..."/>
@@ -417,18 +417,18 @@ import { getFirestore, doc, onSnapshot, setDoc, serverTimestamp }
 // panel "Configurar respuestas" de la interfaz
 // ══════════════════════════════════════════════
 const PRUEBAS=[
-  {id:1,titulo:"Os copos de neve",emoji:"❄️",tipo:"contar",respuesta:"12"},
-  {id:2,titulo:"As lanternas do barco",emoji:"🏮",tipo:"contar",respuesta:"7"},
-  {id:3,titulo:"Os agasallos roubados",emoji:"🎁",tipo:"contar",respuesta:"5"},
-  {id:4,titulo:"A mensaxe do papagaio",emoji:"🦜",tipo:"acertijo",respuesta:"NORTE"},
-  {id:5,titulo:"O reloxo do capitán",emoji:"🕰️",tipo:"reloxo",respuesta:"2612"},
-  {id:6,titulo:"O mapa do tesouro",emoji:"🗺️",tipo:"acertijo",respuesta:"ESTRELA"},
-  {id:7,titulo:"A porta das runas",emoji:"ᚱ",tipo:"acertijo",respuesta:"AURORA"},
-  {id:8,titulo:"O baúl dos piratas",emoji:"🧰",tipo:"acertijo",respuesta:"3185"},
-  {id:9,titulo:"O compás máxico",emoji:"🧭",tipo:"acertijo",respuesta:"NADAL"}
+  {id:1,titulo:"Los copos de nieve",emoji:"❄️",tipo:"contar",respuesta:"12"},
+  {id:2,titulo:"Los farolillos del barco",emoji:"🏮",tipo:"contar",respuesta:"7"},
+  {id:3,titulo:"Los regalos robados",emoji:"🎁",tipo:"contar",respuesta:"5"},
+  {id:4,titulo:"El mensaje del loro",emoji:"🦜",tipo:"acertijo",respuesta:"NORTE"},
+  {id:5,titulo:"El reloj del capitán",emoji:"🕰️",tipo:"reloxo",respuesta:"2612"},
+  {id:6,titulo:"El mapa del tesoro",emoji:"🗺️",tipo:"acertijo",respuesta:"ESTRELLA"},
+  {id:7,titulo:"La puerta de las runas",emoji:"ᚱ",tipo:"acertijo",respuesta:"AURORA"},
+  {id:8,titulo:"El baúl de los piratas",emoji:"🧰",tipo:"acertijo",respuesta:"3185"},
+  {id:9,titulo:"La brújula mágica",emoji:"🧭",tipo:"acertijo",respuesta:"NAVIDAD"}
 ]; // ← mismos títulos y respuestas que en jugador.html
 
-let codigoFinal = "O NADAL ESTÁ A SALVO"; // ← frase que ven los jugadores al final (tras el vídeo)
+let codigoFinal = "LA NAVIDAD ESTÁ A SALVO"; // ← frase que ven los jugadores al final (tras el vídeo)
 
 const DURACION = 50 * 60;
 const SESION = "navidad_lugo"; // ← igual que en jugador.html
@@ -479,6 +479,11 @@ function escuchar(){
       PRUEBAS.forEach(p=>{ if(d.respuestas[p.id]) p.respuesta=d.respuestas[p.id]; });
       renderEditCards();
     }
+    // paso a castellano: cambia una vez las respuestas/frase de ejemplo antiguas en gallego
+    { const M={ESTRELA:'ESTRELLA',NADAL:'NAVIDAD'}, r=d.respuestas||{}, nr={...r}; let cambia=false;
+      for(const k in nr){ if(M[String(nr[k]).toUpperCase()]){ nr[k]=M[String(nr[k]).toUpperCase()]; cambia=true; } }
+      const viejaFinal=d.codigo_final==='O NADAL ESTÁ A SALVO';
+      if(cambia||viejaFinal){ const upd={}; if(cambia) upd.respuestas=nr; if(viejaFinal) upd.codigo_final='LA NAVIDAD ESTÁ A SALVO'; guardar(upd); return; } }
     if(d.codigo_final){ codigoFinal=d.codigo_final; renderEditCards(); }
     detectarCambios(d);
     renderReloxo(d);
