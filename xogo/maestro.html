@@ -114,6 +114,12 @@ main{padding:20px 20px 50px;max-width:1200px;margin:0 auto;}
 .btn-t:disabled{opacity:0.3;cursor:not-allowed;}
 
 /* MENSAJES */
+.es-log{margin-top:12px;max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.es-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px}
+.es-item .q{color:var(--text-dim);font-style:italic}.es-item .a{margin-top:3px}
+.es-item .m{float:right;font-size:10px;color:var(--text-muted)}
+.es-item.pista{border-left:3px solid var(--gold)}.es-item.pregunta{border-left:3px solid #3fcf7a}.es-item.sen_nome,.es-item.nada{opacity:.75}
+.es-vacio{font-size:12px;color:var(--text-muted);font-style:italic}
 .msg-presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
 .btn-preset{font-size:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text-dim);padding:5px 11px;cursor:pointer;transition:all 0.2s;border-radius:4px;font-style:italic;}
 .btn-preset:hover{border-color:var(--accent-dim);color:var(--accent);}
@@ -305,6 +311,27 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
     <div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic;">Al superar todas las pruebas, la tablet reproduce este vídeo a pantalla completa y después muestra la frase final. Si el vídeo no carga, muestra la frase directamente.</div>
   </div>
 
+  <!-- ESPÍRITO DO NADAL -->
+  <div class="sec">
+    <div class="sec-title">✨ Espírito do Nadal · tablet que habla (espirito.html)</div>
+    <div class="rx-grid">
+      <div class="rx-card"><div class="rx-lbl">Prueba en la que ayuda</div><div class="rx-val" id="es-fase">—</div></div>
+      <div class="rx-card"><div class="rx-lbl">Pistas dadas</div><div class="rx-val" id="es-pistas">0</div></div>
+      <div class="rx-card"><div class="rx-lbl">Preguntas</div><div class="rx-val" id="es-npreg">0</div></div>
+      <div class="rx-card"><div class="rx-lbl">Estado</div><div class="rx-val" id="es-mudo-v">🔊 Activo</div></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <select class="msg-input" id="es-fase-sel" style="width:auto;min-width:220px" onchange="espiritoFase(this.value)"></select>
+      <button class="btn-preset" id="es-mudo-btn" onclick="espiritoMudo()">🔇 Silenciar espíritu</button>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+      <input class="msg-input" id="es-texto" type="text" maxlength="200" placeholder="Haz que el espíritu diga algo en voz alta (en gallego)..." style="flex:1;min-width:220px">
+      <button class="btn-enviar" onclick="espiritoFalar()">🔊 Que lo diga</button>
+    </div>
+    <div class="es-log" id="es-log"><div class="es-vacio">Todavía no le han preguntado nada.</div></div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic;">Las pistas se editan en la lista PISTAS al principio de espirito.html. Por defecto ayuda con la primera prueba sin resolver; si quieres, fíjala arriba.</div>
+  </div>
+
   <!-- EDITAR RESPUESTAS -->
   <div class="sec">
     <div class="sec-title">✏️ Configurar respuestas de las pruebas</div>
@@ -456,6 +483,7 @@ function escuchar(){
     detectarCambios(d);
     renderReloxo(d);
     renderVideo(d);
+    renderEspirito(d);
     renderMaestro(d);
     actualizarControles();
   },e=>{setConn('err');console.error(e);});
@@ -486,7 +514,7 @@ window.iniciarPartida=async function(){
   if(!db){alert('Firebase no conectado.');return;}
   const ts=Date.now();
   tiempoInicio=ts; juegoActivo=true; pausado=false; tiempoAgotado=false;
-  await guardar({activo:true,pausado:false,tiempo_agotado:false,inicio_ms:ts,resueltas:[],intentosPorPrueba:{},total_resueltas:0,mensaje_maestro:'',mensaje_ts:0,video_estado:'',reloxo:{corda:false,tapa:false,marcas:[],ts:ts},reloxo_cmd:'reset',reloxo_cmd_ts:ts});
+  await guardar({activo:true,pausado:false,tiempo_agotado:false,inicio_ms:ts,resueltas:[],intentosPorPrueba:{},total_resueltas:0,mensaje_maestro:'',mensaje_ts:0,video_estado:'',reloxo:{corda:false,tapa:false,marcas:[],ts:ts},reloxo_cmd:'reset',reloxo_cmd_ts:ts,espirito_log:[],espirito_pistas:0,espirito_nivel:{},espirito_fase:'auto'});
   iniciarCronoM();
   actualizarControles();
   addLog('info','<strong>Partida iniciada</strong> por el Game Master.');
@@ -518,7 +546,7 @@ window.resetearPartida=async function(){
   document.getElementById('crono-fill').className='crono-fill';
   actualizarControles();
   const tsR=Date.now();
-  await guardar({activo:false,pausado:false,tiempo_agotado:false,inicio_ms:null,resueltas:[],intentosPorPrueba:{},total_resueltas:0,mensaje_maestro:'',mensaje_ts:0,video_estado:'',reloxo:{corda:false,tapa:false,marcas:[],ts:tsR},reloxo_cmd:'reset',reloxo_cmd_ts:tsR});
+  await guardar({activo:false,pausado:false,tiempo_agotado:false,inicio_ms:null,resueltas:[],intentosPorPrueba:{},total_resueltas:0,mensaje_maestro:'',mensaje_ts:0,video_estado:'',reloxo:{corda:false,tapa:false,marcas:[],ts:tsR},reloxo_cmd:'reset',reloxo_cmd_ts:tsR,espirito_log:[],espirito_pistas:0,espirito_nivel:{},espirito_fase:'auto'});
   addLog('info','<strong>Partida reiniciada</strong>.');
 };
 
@@ -728,6 +756,45 @@ window.guardarVideoUrl=async function(){
 window.ordenVideo=async function(cmd){
   await guardar({video_cmd:cmd,video_cmd_ts:Date.now()});
   addLog('info',cmd==='saltar'?'Orden enviada: <strong>saltar vídeo</strong>.':'Orden enviada: <strong>repetir vídeo</strong>.');
+};
+
+// ── Espírito do Nadal ──
+let esUltimoTs=0, esMudo=false;
+(function(){
+  const sel=document.getElementById('es-fase-sel');
+  sel.innerHTML='<option value="auto">Automático (primera prueba sin resolver)</option>'+
+    PRUEBAS.map(p=>`<option value="${p.id}">${p.emoji} ${p.id}. ${p.titulo}</option>`).join('')+
+    '<option value="final">🧭 Final (todas resueltas)</option>';
+})();
+function esc(t){ return String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function renderEspirito(d){
+  const res=d.resueltas||[], f=d.espirito_fase||'auto';
+  let fase=f;
+  if(f==='auto'){ const p=PRUEBAS.find(x=>!res.includes(x.id)); fase=p?p.id:'final'; }
+  const p=PRUEBAS.find(x=>String(x.id)===String(fase));
+  document.getElementById('es-fase').textContent=(p?`${p.emoji} ${p.titulo}`:'🧭 Final')+(f==='auto'?'':' (fijada)');
+  const sel=document.getElementById('es-fase-sel'); if(document.activeElement!==sel) sel.value=String(f);
+  document.getElementById('es-pistas').textContent=d.espirito_pistas||0;
+  const log=d.espirito_log||[];
+  document.getElementById('es-npreg').textContent=log.length;
+  esMudo=!!d.espirito_mudo;
+  document.getElementById('es-mudo-v').textContent=esMudo?'🔇 Silenciado':'🔊 Activo';
+  document.getElementById('es-mudo-btn').textContent=esMudo?'🔊 Reactivar espíritu':'🔇 Silenciar espíritu';
+  const T={pista:'💡 Pista',pregunta:'🗝 Pregunta clave',repetida:'↺ Pista repetida',limite:'⛔ Sin pistas',sen_nome:'🙊 No lo nombraron',nada:'❓ No entendió',saudo:'👋 Saludo',inactivo:'💤 Partida parada',repetir:'↺ Repetir',mudo:'🔇 Silenciado'};
+  const box=document.getElementById('es-log');
+  box.innerHTML=log.length?log.slice().reverse().map(e=>`<div class="es-item ${e.tipo}"><span class="m">${T[e.tipo]||e.tipo}${e.nivel?' '+e.nivel:''} · ${new Date(e.ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</span><div class="q">« ${esc(e.p)} »</div><div class="a">${esc(e.r)}</div></div>`).join(''):'<div class="es-vacio">Todavía no le han preguntado nada.</div>';
+  const ult=log[log.length-1];
+  if(ult&&ult.ts>esUltimoTs){
+    if(esUltimoTs) addLog(ult.tipo==='pista'?'info':'info',`✨ Espíritu: <em>«${esc(ult.p)}»</em> → ${T[ult.tipo]||ult.tipo}`);
+    esUltimoTs=ult.ts;
+  }
+}
+window.espiritoFase=async function(v){ await guardar({espirito_fase:v}); addLog('info','✨ Espíritu ayudando con: <strong>'+(v==='auto'?'automático':v)+'</strong>'); };
+window.espiritoMudo=async function(){ await guardar({espirito_mudo:!esMudo}); };
+window.espiritoFalar=async function(){
+  const i=document.getElementById('es-texto'), t=i.value.trim(); if(!t) return;
+  await guardar({espirito_cmd:{texto:t,ts:Date.now()}}); i.value='';
+  addLog('info',`✨ El espíritu dice: <em>${esc(t)}</em>`);
 };
 
 function addLog(tipo,texto){

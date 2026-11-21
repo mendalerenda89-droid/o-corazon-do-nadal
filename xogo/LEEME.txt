@@ -20,3 +20,11 @@ Cambiar pruebas:
     Orden de los puntos: Escape (1), Tambor (2), Volante (3), Rodaxe (4).
 
 Reiniciar entre grupos: botón Reset del maestro (también vuelve a congelar el reloj y borra el estado del vídeo).
+
+Espírito do Nadal (espirito.html):
+  - Ábrelo en la tablet con Chrome (Android). Pulsa "Espertar o espírito", da permiso al micrófono y listo.
+  - Los jugadores tocan el espíritu y preguntan llamándolo por su nombre, p. ej.
+    "Espírito do Nadal, como pasamos á seguinte sala?" → da la pista de la prueba en la que van.
+  - Pistas y preguntas secretas: lista PISTAS al principio de espirito.html (son de EJEMPLO).
+  - Desde el maestro: ver lo que preguntan, fijar la prueba, silenciarlo o hacer que diga una frase.
+  - Voz: ⚙ abajo a la derecha (mejor instalar la voz "Galego" de Google en la tablet).
