@@ -313,7 +313,7 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
 
   <!-- ESPÍRITO DO NADAL -->
   <div class="sec">
-    <div class="sec-title">✨ Espírito do Nadal · tablet que habla (espirito.html)</div>
+    <div class="sec-title">✨ Espírito do Nadal · respuestas y pistas por voz</div>
     <div class="rx-grid">
       <div class="rx-card"><div class="rx-lbl">Prueba en la que ayuda</div><div class="rx-val" id="es-fase">—</div></div>
       <div class="rx-card"><div class="rx-lbl">Pistas dadas</div><div class="rx-val" id="es-pistas">0</div></div>
@@ -329,7 +329,7 @@ textarea.edit-input{letter-spacing:1px;text-transform:none;text-align:left;font-
       <button class="btn-enviar" onclick="espiritoFalar()">🔊 Que lo diga</button>
     </div>
     <div class="es-log" id="es-log"><div class="es-vacio">Todavía no le han preguntado nada.</div></div>
-    <div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic;">Las pistas se editan en la lista PISTAS al principio de espirito.html. Por defecto ayuda con la primera prueba sin resolver; si quieres, fíjala arriba.</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic;">Las pistas y frases se editan en espirito-core.js (lista PISTAS). El espíritu está en el panel del jugador y también suelto en espirito.html. Por defecto ayuda con la primera prueba sin resolver; si quieres, fíjala arriba.</div>
   </div>
 
   <!-- EDITAR RESPUESTAS -->
@@ -780,7 +780,7 @@ function renderEspirito(d){
   esMudo=!!d.espirito_mudo;
   document.getElementById('es-mudo-v').textContent=esMudo?'🔇 Silenciado':'🔊 Activo';
   document.getElementById('es-mudo-btn').textContent=esMudo?'🔊 Reactivar espíritu':'🔇 Silenciar espíritu';
-  const T={pista:'💡 Pista',pregunta:'🗝 Pregunta clave',repetida:'↺ Pista repetida',limite:'⛔ Sin pistas',sen_nome:'🙊 No lo nombraron',nada:'❓ No entendió',saudo:'👋 Saludo',inactivo:'💤 Partida parada',repetir:'↺ Repetir',mudo:'🔇 Silenciado'};
+  const T={pista:'💡 Pista',pregunta:'🗝 Pregunta clave',repetida:'↺ Pista repetida',limite:'⛔ Sin pistas',sen_nome:'🙊 No lo nombraron',nada:'❓ No entendió',saudo:'👋 Saludo',inactivo:'💤 Partida parada',repetir:'↺ Repetir',mudo:'🔇 Silenciado',resposta_ok:'✅ Respuesta correcta',resposta_mal:'❌ Respuesta incorrecta',resposta_bloq:'🔒 Bloqueada',resposta_xa:'↺ Ya resuelta',cal_proba:'❔ No dijeron qué prueba'};
   const box=document.getElementById('es-log');
   box.innerHTML=log.length?log.slice().reverse().map(e=>`<div class="es-item ${e.tipo}"><span class="m">${T[e.tipo]||e.tipo}${e.nivel?' '+e.nivel:''} · ${new Date(e.ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</span><div class="q">« ${esc(e.p)} »</div><div class="a">${esc(e.r)}</div></div>`).join(''):'<div class="es-vacio">Todavía no le han preguntado nada.</div>';
   const ult=log[log.length-1];

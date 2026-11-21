@@ -53,6 +53,26 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .eyebrow{font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;}
 .titulo-principal{font-family:'Cinzel Decorative',serif;line-height:1.05;font-size:clamp(28px,6vw,58px);background:linear-gradient(135deg,var(--love),var(--accent),var(--joy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:8px;}
 .subtitulo{font-family:'Cinzel',serif;font-style:italic;font-size:clamp(12px,2vw,16px);color:var(--text-dim);}
+.esp-stage{position:relative;height:clamp(220px,34vh,330px);margin:-10px -20px 0;cursor:pointer;}
+.esp-stage canvas{position:absolute;inset:0;width:100%;height:100%;}
+.esp-titulo{font-family:'Cinzel Decorative',serif;color:var(--joy);font-size:clamp(20px,3.4vw,30px);text-shadow:0 0 18px rgba(226,182,99,.35);margin-top:-6px}
+.esp-estado{font-family:'Cinzel',serif;letter-spacing:4px;font-size:12px;text-transform:uppercase;color:var(--sad);text-shadow:0 0 10px currentColor;margin-top:8px;transition:color .4s}
+.esp-preg{min-height:18px;font-style:italic;color:var(--text-dim);font-size:14px;margin-top:8px}
+.esp-resp{min-height:30px;font-family:'Cinzel',serif;font-weight:600;font-size:clamp(16px,2.3vw,22px);line-height:1.4;color:#fff;text-shadow:0 0 16px rgba(127,208,255,.5);margin:6px auto 0;max-width:720px}
+.esp-resp.in{animation:espIn 1s ease}
+@keyframes espIn{from{opacity:0;filter:blur(5px);transform:translateY(6px)}to{opacity:1;filter:none;transform:none}}
+.esp-axuda{font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.6}
+.esp-axuda b{color:var(--joy);font-weight:600}
+#esp-boot{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(4,11,28,.95);text-align:center;cursor:pointer;padding:20px}
+#esp-boot .t{font-family:'Cinzel Decorative',serif;color:var(--joy);font-size:clamp(30px,6vw,52px)}
+#esp-boot .s{font-family:'Cinzel',serif;color:var(--text-dim);letter-spacing:3px}
+#esp-boot .btn{margin-top:10px;padding:16px 34px;border:1px solid var(--joy);border-radius:40px;color:var(--joy);font-family:'Cinzel',serif;letter-spacing:3px;animation:espLat 2s ease-in-out infinite}
+@keyframes espLat{50%{box-shadow:0 0 30px rgba(226,182,99,.45)}}
+#esp-boot.gone{opacity:0;pointer-events:none;transition:opacity .8s}
+.pcard.recien{background:rgba(63,207,122,.18)!important;border-color:var(--green)!important;box-shadow:0 0 0 3px rgba(63,207,122,.35),0 0 30px rgba(63,207,122,.35);animation:recien 4s ease forwards}
+@keyframes recien{0%{transform:scale(1)}8%{transform:scale(1.06)}20%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(.92)}}
+.pcard.erro{animation:erro .5s ease;border-color:var(--red)!important}
+@keyframes erro{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 .sep{width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px auto 0;}
 
 /* ESPERA */
@@ -233,9 +253,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="wrap">
   <div class="cabecera">
-    <div class="eyebrow">Escape room de Nadal · Lugo</div>
-    <div class="titulo-principal">O Corazón<br>do Nadal</div>
-    <div class="subtitulo">O misterio do Tesouro Xeado</div>
+    <div class="eyebrow">O Corazón do Nadal · O misterio do Tesouro Xeado</div>
+    <div class="esp-stage" id="esp-stage"><canvas id="esp-cv"></canvas></div>
+    <div class="esp-titulo">Espírito do Nadal</div>
+    <div class="esp-estado" id="esp-estado">Durmindo</div>
+    <div class="esp-preg" id="esp-preg"></div>
+    <div class="esp-resp" id="esp-resp"></div>
+    <div class="esp-axuda">Tocade o espírito e dicide: <b>«Espírito, a solución da proba do reloxo é 2612»</b><br>ou pedídelle axuda: <b>«Espírito, como pasamos á seguinte sala?»</b></div>
     <div class="sep"></div>
   </div>
 
@@ -357,6 +381,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 
 <!-- VÍDEO FINAL -->
+<div id="esp-boot">
+  <div class="t">Espírito do Nadal</div>
+  <div class="s">O misterio do Tesouro Xeado</div>
+  <div class="btn">✦ ESPERTAR O ESPÍRITO ✦</div>
+</div>
+
 <div id="video-overlay">
   <video id="video-final" playsinline preload="auto"></video>
   <button class="video-play" id="video-play" onclick="reproducirVideo(true)">▶ Ver a revelación</button>
@@ -370,6 +400,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { crearEspirito, decidirPista, extraPista, entradaLog, FRASES, norm as normE, algunha, nomeado, ao_chou }
+  from "./espirito-core.js";   // o Espírito do Nadal (pistas e frases: espirito-core.js)
 
 // ══════════════════════════════════════════════
 // PROBAS DE «O CORAZÓN DO NADAL» — edita aquí
@@ -383,6 +415,7 @@ import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp }
 const PRUEBAS=[
   {
     id:1,
+    alias:["copos","copo","neve","nieve"], // palabras para recoñecer a proba pola voz
     titulo:"Os copos de neve",
     emoji:"❄️",
     tipo:"contar",
@@ -393,6 +426,7 @@ const PRUEBAS=[
   },
   {
     id:2,
+    alias:["lanternas","lanterna","linternas","linterna","farois","faroles"], // palabras para recoñecer a proba pola voz
     titulo:"As lanternas do barco",
     emoji:"🏮",
     tipo:"contar",
@@ -403,6 +437,7 @@ const PRUEBAS=[
   },
   {
     id:3,
+    alias:["agasallos","agasallo","regalos","regalo"], // palabras para recoñecer a proba pola voz
     titulo:"Os agasallos roubados",
     emoji:"🎁",
     tipo:"contar",
@@ -413,6 +448,7 @@ const PRUEBAS=[
   },
   {
     id:4,
+    alias:["papagaio","papagayo","loro","mensaxe","mensaje"], // palabras para recoñecer a proba pola voz
     titulo:"A mensaxe do papagaio",
     emoji:"🦜",
     tipo:"acertijo",
@@ -423,6 +459,7 @@ const PRUEBAS=[
   },
   {
     id:5,
+    alias:["reloxo","reloj"], // palabras para recoñecer a proba pola voz
     titulo:"O reloxo do capitán",
     emoji:"🕰️",
     tipo:"reloxo",
@@ -433,6 +470,7 @@ const PRUEBAS=[
   },
   {
     id:6,
+    alias:["mapa","tesouro","tesoro"], // palabras para recoñecer a proba pola voz
     titulo:"O mapa do tesouro",
     emoji:"🗺️",
     tipo:"acertijo",
@@ -443,6 +481,7 @@ const PRUEBAS=[
   },
   {
     id:7,
+    alias:["runas","runa"], // palabras para recoñecer a proba pola voz
     titulo:"A porta das runas",
     emoji:"ᚱ",
     tipo:"acertijo",
@@ -453,6 +492,7 @@ const PRUEBAS=[
   },
   {
     id:8,
+    alias:["baul","baules","candado","piratas"], // palabras para recoñecer a proba pola voz
     titulo:"O baúl dos piratas",
     emoji:"🧰",
     tipo:"acertijo",
@@ -463,6 +503,7 @@ const PRUEBAS=[
   },
   {
     id:9,
+    alias:["compas","agullas","agujas"], // palabras para recoñecer a proba pola voz
     titulo:"O compás máxico",
     emoji:"🧭",
     tipo:"acertijo",
@@ -522,6 +563,7 @@ function escuchar(){
   unsubscribe=onSnapshot(doc(db,'juego',SESION),snap=>{
     if(!snap.exists()){setFb('ok');return;}
     const d=snap.data(); setFb('ok');
+    espDoc=d; espSnapshot(d);
     // Estado del juego
     const eraActivo=juegoActivo, eraPausado=pausado;
     juegoActivo=!!d.activo; tiempoAgotado=!!d.tiempo_agotado;
@@ -621,14 +663,16 @@ function renderGrid(){
   const g=document.getElementById('pruebas-grid'); g.innerHTML='';
   PRUEBAS.forEach(p=>{
     const res=estado.resueltas.includes(p.id);
+    const verde=(recien[p.id]||0)>Date.now();
+    if(res&&!verde) return;               // só se ven as probas que faltan
     const activa=estado.prueba_activa===p.id;
     const bloq=bloqueoPorPrueba[p.id]?.activo;
     let cls='pcard';
-    if(res) cls+=' resuelta';
+    if(res) cls+=' resuelta'+(verde?' recien':'');
     else if(activa) cls+=' activa';
     else if(bloq) cls+=' bloq-activo';
     if(tiempoAgotado) cls+=' bloqueada';
-    const c=document.createElement('div'); c.className=cls;
+    const c=document.createElement('div'); c.className=cls; c.dataset.id=p.id;
     const tiempoRestante=bloq?bloqueoPorPrueba[p.id].restante:0;
     const minB=Math.floor(tiempoRestante/60), segB=tiempoRestante%60;
     c.innerHTML=`<span class="pcard-emoji">${p.emoji}</span>
@@ -955,6 +999,143 @@ function rematarVideo(st){
 
 // cárgase o reloxo xa ao abrir a páxina (oculto e sen debuxar) para que abra ao momento
 setTimeout(prepararReloxo,1500);
+
+// ══════════════════════════════════════════════
+// ESPÍRITO DO NADAL no panel do xogador
+// Tocar o espírito e dicir:
+//   «Espírito, a solución da proba do reloxo é 2612»  → comproba a resposta
+//   «Espírito, como pasamos á seguinte sala?»         → dá unha pista
+// ══════════════════════════════════════════════
+let espDoc={}, espUltima='', espBooted=false, espUltimoCmd=0, espPrimeiro=true;
+let recien={};                        // id → ata cando se ve en verde
+const $e=id=>document.getElementById(id);
+function espAmosar(preg,resp){
+  if(preg!==null) $e('esp-preg').textContent=preg?`« ${preg} »`:'';
+  if(resp!==null){ const r=$e('esp-resp'); r.classList.remove('in'); void r.offsetWidth; r.textContent=resp; r.classList.add('in'); }
+}
+const esp=crearEspirito({
+  canvas:$e('esp-cv'), ceo:false, escala:0.2, centroY:0.5,
+  onEstado:(txt,col)=>{ const e=$e('esp-estado'); e.textContent=txt; e.style.color=col; },
+  onParcial:t=>espAmosar(t,null)
+});
+esp.setEstado('durmindo');
+esp.engadirAxustes();
+
+function espSnapshot(d){
+  const c=d.espirito_cmd;
+  if(c&&c.ts>espUltimoCmd){
+    const novo=!espPrimeiro; espUltimoCmd=c.ts;
+    if(novo&&c.texto&&espBooted){ espAmosar('',c.texto); espUltima=c.texto; esp.falar(c.texto); }
+  }
+  espPrimeiro=false;
+}
+function espDicir(texto,tipo){
+  espAmosar(null,texto); espUltima=texto;
+  if(espDoc.espirito_mudo){ esp.setEstado(tipo==='ben'?'ben':tipo==='mal'?'mal':'esperto'); setTimeout(()=>esp.setEstado('esperto'),2500); }
+  else esp.falar(texto,tipo);
+}
+function espRexistrar(p,r,tipo,fase,nivel,extra={}){
+  const log=entradaLog(espDoc,p,r,tipo,fase,nivel);
+  espDoc.espirito_log=log; Object.assign(espDoc,extra);
+  guardar({espirito_log:log,...extra});
+}
+
+// ── entender a frase ──
+const NUMS={cero:0,un:1,uno:1,unha:1,una:1,dous:2,dos:2,duas:2,tres:3,catro:4,cuatro:4,cinco:5,seis:6,sete:7,siete:7,
+  oito:8,ocho:8,nove:9,nueve:9,dez:10,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15};
+const ARTIGOS=new Set(['o','a','os','as','el','la','los','las','un','una','unha','lo','numero','palabra']);
+const PAL_SOL=['solucion','solucions','soluciones','clave','codigo','resposta','respuesta','contrasinal','contrasena','resultado'];
+function posPalabra(t,w){ w=normE(w); const m=(' '+t+' ').indexOf(' '+w+' '); return m; }
+function interpretar(texto){
+  const t=normE(texto);
+  // que proba nomean?
+  let proba=null, pos=Infinity;
+  PRUEBAS.forEach(q=>(q.alias||[]).forEach(a=>{ const i=posPalabra(t,a); if(i>=0&&i<pos){ proba=q; pos=i; } }));
+  const m=t.match(/\b(proba|prueba)\s+(?:numero\s+)?(\d+|un|unha|una|uno|dous|dos|tres|catro|cuatro|cinco|seis|sete|siete|oito|ocho|nove|nueve)\b/);
+  if(m){ const n=/^\d+$/.test(m[2])?+m[2]:NUMS[m[2]]; const q=PRUEBAS.find(x=>x.id===n); if(q){ proba=q; pos=m.index; } }
+  // é un intento de resposta? («a solución/clave/código ... é X»)
+  if(!algunha(t,PAL_SOL)) return {tipo:'pregunta',proba};
+  let cand=null; const re=/\b(e|es|son|sera|seria)\b/g; let mm;
+  while((mm=re.exec(t))){ if(mm.index>(pos===Infinity?-1:pos)) cand=t.slice(mm.index+mm[0].length).trim(); }
+  return {tipo:'resposta',proba,cand};
+}
+function respostaCorrecta(cand,resp){
+  const A=normE(resp).replace(/\s+/g,'');
+  const pal=normE(cand).split(' ').filter(Boolean);
+  if(/^\d+$/.test(A)) return pal.map(w=>NUMS[w]!==undefined?String(NUMS[w]):w).join('').replace(/[^0-9]/g,'')===A;
+  return pal.filter(w=>!ARTIGOS.has(w)).join('')===A;
+}
+
+// ── comprobar unha resposta dita en voz alta ──
+async function comprobarPorVoz(p,cand){
+  if(estado.resueltas.includes(p.id)) return {r:FRASES.xa_resolta,tipo:'resposta_xa'};
+  const b0=bloqueoPorPrueba[p.id];
+  if(b0?.activo) return {r:FRASES.xa_bloqueada.replace('{s}',b0.restante),tipo:'resposta_bloq'};
+  if(!bloqueoPorPrueba[p.id]) bloqueoPorPrueba[p.id]={activo:false,restante:0,timer:null,intentosCiclo:0};
+  const b=bloqueoPorPrueba[p.id];
+  b.intentosCiclo=(b.intentosCiclo||0)+1;
+  intentosPorPrueba[p.id]=(intentosPorPrueba[p.id]||0)+1;
+  if(respostaCorrecta(cand,p.respuesta)){
+    estado.resueltas.push(p.id); delete bloqueoPorPrueba[p.id];
+    recien[p.id]=Date.now()+4000;
+    if(estado.prueba_activa===p.id){ estado.prueba_activa=null; $e('panel-entrada').classList.remove('visible'); $e('bloqueo-banner').classList.remove('show'); }
+    await guardar({resueltas:estado.resueltas,total_resueltas:estado.resueltas.length,intentosPorPrueba});
+    render(); confetti(); setTimeout(render,4100);
+    return {r:todasResueltas()?FRASES.correcta.trim():FRASES.correcta+(p.cel||''),tipo:'resposta_ok'};
+  }
+  await guardar({intentosPorPrueba});
+  if(estado.prueba_activa===p.id){ intentosActuales=b.intentosCiclo; actualizarDots(intentosActuales); }
+  const card=document.querySelector(`.pcard[data-id="${p.id}"]`);
+  if(card){ card.classList.remove('erro'); void card.offsetWidth; card.classList.add('erro'); }
+  if(b.intentosCiclo>=INTENTOS_MAX){ activarBloqueoPrueba(p); return {r:FRASES.bloqueada,tipo:'resposta_bloq'}; }
+  return {r:ao_chou(FRASES.incorrecta),tipo:'resposta_mal'};
+}
+
+async function espResponder(texto){
+  esp.setEstado('pensa');
+  await new Promise(r=>setTimeout(r,900));
+  const it=interpretar(texto);
+  let out;
+  if(it.tipo==='resposta'){
+    if(!juegoActivo&&!estado.resueltas.length) out={r:FRASES.dormindo,tipo:'inactivo'};
+    else if(tiempoAgotado) out={r:FRASES.tempo_esgotado,tipo:'inactivo'};
+    else if(pausado) out={r:FRASES.pausado,tipo:'inactivo'};
+    else if(!nomeado(texto)) out={r:ao_chou(FRASES.sen_nome),tipo:'sen_nome'};
+    else{
+      let p=it.proba;
+      const pend=PRUEBAS.filter(x=>!estado.resueltas.includes(x.id));
+      if(!p&&pend.length===1) p=pend[0];
+      if(!p&&estado.prueba_activa) p=PRUEBAS.find(x=>x.id===estado.prueba_activa);
+      if(!p) out={r:FRASES.cal_proba,tipo:'cal_proba'};
+      else if(!it.cand) out={r:FRASES.sen_solucion,tipo:'cal_proba',fase:p.id};
+      else { out=await comprobarPorVoz(p,it.cand); out.fase=p.id; }
+    }
+    const ton=out.tipo==='resposta_ok'?'ben':(out.tipo==='resposta_mal'||out.tipo==='resposta_bloq')?'mal':'fala';
+    espDicir(out.r,ton);
+    espRexistrar(texto,out.r,out.tipo,out.fase);
+    return;
+  }
+  // pregunta → pistas (da proba que nomeen, ou da primeira pendente)
+  if(espDoc.espirito_mudo){ esp.setEstado('esperto'); espRexistrar(texto,'(espírito silenciado)','mudo'); return; }
+  const doc={...espDoc,activo:juegoActivo,pausado,tiempo_agotado:tiempoAgotado,resueltas:estado.resueltas};
+  const fase=it.proba&&!estado.resueltas.includes(it.proba.id)?it.proba.id:undefined;
+  const d=decidirPista(texto,doc,espUltima,fase);
+  espDicir(d.r,'fala');
+  espRexistrar(texto,d.r,d.tipo,d.fase,d.nivel,extraPista(d,espDoc));
+}
+
+$e('esp-boot').addEventListener('click',async()=>{
+  espBooted=true; $e('esp-boot').classList.add('gone');
+  try{ await document.documentElement.requestFullscreen(); }catch(e){}
+  await esp.espertar();
+  espAmosar('','Tocádeme e chamádeme polo meu nome…');
+});
+$e('esp-stage').addEventListener('click',()=>{
+  if(!espBooted) return;
+  esp.escoitar((t,erro)=>{ if(t) espResponder(t); else if(erro) espAmosar(null,erro); });
+});
+// para probar sen falar (consola): espirito("Espírito, a solución da proba do reloxo é 2612")
+window.espirito=t=>{ espAmosar(t,null); espResponder(t); };
 
 // ── Arranque ──
 conectar({
