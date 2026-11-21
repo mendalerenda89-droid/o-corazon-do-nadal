@@ -91,7 +91,11 @@ export const FRASES = {
   pausado: "O tempo está detido. Agardade un momento.",
   tempo_esgotado: "O xeo gañou esta vez... pero o Nadal sempre volve.",
   // respuestas (panel do xogador)
-  correcta: "Clave correcta! ",                          // + el texto de celebración de la prueba
+  // Al acertar. {proba} = nombre de la prueba. Después se añade la frase de celebración de la prueba.
+  correcta: ["Clave correcta! Noraboa, tripulación: superastes a proba «{proba}».",
+             "Clave correcta! Moi ben! A proba «{proba}» xa é vosa.",
+             "Clave correcta! Noraboa por superar «{proba}»."],
+  correcta_ultima: "Clave correcta! Noraboa, tripulación: superastes a última proba, «{proba}». O corazón do Nadal volve latexar!",
   incorrecta: ["Clave incorrecta. Volvede probar.",
                "Clave incorrecta. Revisade ben e volvede probar.",
                "Non, non é esa. Volvede probar, tripulación."],

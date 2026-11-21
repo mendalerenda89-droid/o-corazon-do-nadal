@@ -809,6 +809,7 @@ window.verificar=async function(){
       document.getElementById('panel-entrada').classList.remove('visible');
       document.getElementById('bloqueo-banner').classList.remove('show');
       render(); abrirModal(p); confetti();
+      if(espBooted){ const fr=fraseProba(p); espDicir(fr,'ben'); espRexistrar('(resposta escrita) '+document.getElementById('input-code').value,fr,'resposta_ok',p.id); }
     },700);
   }else{
     inp.className='input-code error';
@@ -1066,6 +1067,11 @@ function respostaCorrecta(cand,resp){
   return pal.filter(w=>!ARTIGOS.has(w)).join('')===A;
 }
 
+// frase de parabéns ao superar unha proba
+function fraseProba(p){
+  if(todasResueltas()) return FRASES.correcta_ultima.replace('{proba}',p.titulo);
+  return ao_chou(FRASES.correcta).replace('{proba}',p.titulo)+(p.cel?' '+p.cel:'');
+}
 // ── comprobar unha resposta dita en voz alta ──
 async function comprobarPorVoz(p,cand){
   if(estado.resueltas.includes(p.id)) return {r:FRASES.xa_resolta,tipo:'resposta_xa'};
@@ -1081,7 +1087,7 @@ async function comprobarPorVoz(p,cand){
     if(estado.prueba_activa===p.id){ estado.prueba_activa=null; $e('panel-entrada').classList.remove('visible'); $e('bloqueo-banner').classList.remove('show'); }
     await guardar({resueltas:estado.resueltas,total_resueltas:estado.resueltas.length,intentosPorPrueba});
     render(); confetti(); setTimeout(render,4100);
-    return {r:todasResueltas()?FRASES.correcta.trim():FRASES.correcta+(p.cel||''),tipo:'resposta_ok'};
+    return {r:fraseProba(p),tipo:'resposta_ok'};
   }
   await guardar({intentosPorPrueba});
   if(estado.prueba_activa===p.id){ intentosActuales=b.intentosCiclo; actualizarDots(intentosActuales); }
