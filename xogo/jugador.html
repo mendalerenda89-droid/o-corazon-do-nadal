@@ -228,6 +228,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 @keyframes cf{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 /* RELOXO DO CAPITÁN */
+.btn-reloxo-top{display:none;margin:14px auto 0;padding:14px 26px;border:2px solid var(--gold);border-radius:40px;background:linear-gradient(135deg,rgba(226,182,99,.28),rgba(226,182,99,.08));color:#fff;font-family:'Cinzel',serif;font-size:clamp(16px,2.4vw,20px);font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 0 24px rgba(226,182,99,.25);animation:rxLat 2.4s ease-in-out infinite}
+.btn-reloxo-top.show{display:inline-block}
+.btn-reloxo-top small{display:block;font-family:'Manrope',sans-serif;font-size:11px;font-weight:500;letter-spacing:.5px;color:var(--text-dim);margin-top:3px}
+@keyframes rxLat{50%{box-shadow:0 0 38px rgba(226,182,99,.55)}}
 .btn-reloxo{display:none;width:100%;margin:0 0 14px;padding:16px;border:1px solid var(--gold);border-radius:10px;background:linear-gradient(135deg,rgba(226,182,99,.18),rgba(226,182,99,.06));color:var(--text);font-family:'Cinzel',serif;font-size:17px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:transform .15s,background .2s}
 .btn-reloxo.show{display:block}
 .btn-reloxo:active{transform:scale(.98)}
@@ -260,6 +264,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="esp-preg" id="esp-preg"></div>
     <div class="esp-resp" id="esp-resp"></div>
     <div class="esp-axuda">Tocad el espíritu y decid: <b>«Solución de la prueba 2: siete»</b> o <b>«Los farolillos, solución siete»</b><br>o pedidle ayuda: <b>«Espíritu, ¿cómo pasamos a la siguiente sala?»</b></div>
+    <button class="btn-reloxo-top" id="btn-reloxo-top" onclick="abrirReloxo()">🕰 Abrir el reloj del capitán<small>Dadle cuerda y desmontad sus piezas</small></button>
     <div class="sep"></div>
   </div>
 
@@ -626,6 +631,7 @@ function iniciarCrono(){
 
 // ── Render principal ──
 function render(){
+  document.getElementById('btn-reloxo-top').classList.remove('show');
   const espera=document.getElementById('pantalla-espera');
   const pausa=document.getElementById('pantalla-pausa');
   const juego=document.getElementById('contenido-juego');
@@ -657,6 +663,9 @@ function render(){
   renderMapa();
   renderProgreso();
   renderFinal();
+  // botón grande do reloxo arriba: só durante o xogo e mentres a proba do reloxo estea sen resolver
+  const pr=PRUEBAS.find(p=>p.tipo==='reloxo');
+  document.getElementById('btn-reloxo-top').classList.toggle('show', !!pr && !estado.resueltas.includes(pr.id) && !tiempoAgotado);
 }
 
 // ── Grid de pruebas ──
