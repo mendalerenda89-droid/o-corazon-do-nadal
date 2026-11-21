@@ -259,7 +259,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="esp-estado" id="esp-estado">Durmindo</div>
     <div class="esp-preg" id="esp-preg"></div>
     <div class="esp-resp" id="esp-resp"></div>
-    <div class="esp-axuda">Tocade o espírito e dicide: <b>«Espírito, a solución da proba do reloxo é 2612»</b><br>ou pedídelle axuda: <b>«Espírito, como pasamos á seguinte sala?»</b></div>
+    <div class="esp-axuda">Tocade o espírito e dicide: <b>«Solución da proba 2: sete»</b> ou <b>«As lanternas do barco, solución sete»</b><br>ou pedídelle axuda: <b>«Espírito, como pasamos á seguinte sala?»</b></div>
     <div class="sep"></div>
   </div>
 
@@ -1008,7 +1008,8 @@ setTimeout(prepararReloxo,1500);
 //   «Espírito, como pasamos á seguinte sala?»         → dá unha pista
 // ══════════════════════════════════════════════
 let espDoc={}, espUltima='', espBooted=false, espUltimoCmd=0, espPrimeiro=true;
-let recien={};                        // id → ata cando se ve en verde
+let recien={};
+const RESPOSTA_SEN_NOME=true;      // true = para responder non fai falta dicir «espírito» (abonda con tocalo)                        // id → ata cando se ve en verde
 const $e=id=>document.getElementById(id);
 function espAmosar(preg,resp){
   if(preg!==null) $e('esp-preg').textContent=preg?`« ${preg} »`:'';
@@ -1047,18 +1048,36 @@ const NUMS={cero:0,un:1,uno:1,unha:1,una:1,dous:2,dos:2,duas:2,tres:3,catro:4,cu
 const ARTIGOS=new Set(['o','a','os','as','el','la','los','las','un','una','unha','lo','numero','palabra']);
 const PAL_SOL=['solucion','solucions','soluciones','clave','codigo','resposta','respuesta','contrasinal','contrasena','resultado'];
 function posPalabra(t,w){ w=normE(w); const m=(' '+t+' ').indexOf(' '+w+' '); return m; }
+const RECHEO=new Set(['a','o','os','as','el','la','los','las','da','de','del','do','das','dela','para','proba','prueba','probas','pruebas',
+  'numero','espirito','espiritu','nadal','navidad','e','es','son','sera','seria','que','pois','pues','ola','hola']);
+const NUM_RE='(\\d+|un|unha|una|uno|dous|dos|tres|catro|cuatro|cinco|seis|sete|siete|oito|ocho|nove|nueve)';
+function soNumeros(txt){ const w=txt.split(' ').filter(Boolean); return w.length>0&&w.every(x=>/^\d+$/.test(x)||NUMS[x]!==undefined); }
+function limpar(txt,proba){
+  let r=' '+txt+' ';
+  r=r.replace(new RegExp('\\b(proba|prueba)\\s+(numero\\s+)?'+NUM_RE+'\\b','g'),' ');
+  const fora=new Set([...RECHEO, ...(proba?normE(proba.titulo).split(' '):[]), ...(proba?(proba.alias||[]).map(normE):[])]);
+  return r.split(' ').filter(w=>w&&!fora.has(w)).join(' ').trim();
+}
 function interpretar(texto){
   const t=normE(texto);
-  // que proba nomean?
+  // que proba nomean? (polo nome/alias ou «proba 2»)
   let proba=null, pos=Infinity;
   PRUEBAS.forEach(q=>(q.alias||[]).forEach(a=>{ const i=posPalabra(t,a); if(i>=0&&i<pos){ proba=q; pos=i; } }));
-  const m=t.match(/\b(proba|prueba)\s+(?:numero\s+)?(\d+|un|unha|una|uno|dous|dos|tres|catro|cuatro|cinco|seis|sete|siete|oito|ocho|nove|nueve)\b/);
+  const m=t.match(new RegExp('\\b(proba|prueba)\\s+(?:numero\\s+)?'+NUM_RE+'\\b'));
   if(m){ const n=/^\d+$/.test(m[2])?+m[2]:NUMS[m[2]]; const q=PRUEBAS.find(x=>x.id===n); if(q){ proba=q; pos=m.index; } }
-  // é un intento de resposta? («a solución/clave/código ... é X»)
-  if(!algunha(t,PAL_SOL)) return {tipo:'pregunta',proba};
-  let cand=null; const re=/\b(e|es|son|sera|seria)\b/g; let mm;
-  while((mm=re.exec(t))){ if(mm.index>(pos===Infinity?-1:pos)) cand=t.slice(mm.index+mm[0].length).trim(); }
-  return {tipo:'resposta',proba,cand};
+  // onde empeza a solución: despois de «solución/clave/código…» e despois do último «é/es»
+  let ini=-1;
+  PAL_SOL.forEach(w=>{ let k=-1, from=0; while((k=(' '+t+' ').indexOf(' '+w+' ',from))>=0){ ini=Math.max(ini,k+w.length); from=k+1; } });
+  const temPal=ini>=0;
+  let resto=temPal?t.slice(ini):t;
+  const re=/\b(e|es|son|sera|seria)\b/g; let mm, corte=-1;
+  while((mm=re.exec(resto))) corte=mm.index+mm[0].length;
+  if(corte>=0) resto=resto.slice(corte);
+  const cand=limpar(resto,proba);
+  // é un intento se din «solución…», ou se nomean a proba e din só un número («lanternas sete»)
+  if(temPal) return {tipo:'resposta',proba,cand:cand||null};
+  if(proba&&soNumeros(cand)) return {tipo:'resposta',proba,cand};
+  return {tipo:'pregunta',proba};
 }
 function respostaCorrecta(cand,resp){
   const A=normE(resp).replace(/\s+/g,'');
@@ -1106,7 +1125,7 @@ async function espResponder(texto){
     if(!juegoActivo&&!estado.resueltas.length) out={r:FRASES.dormindo,tipo:'inactivo'};
     else if(tiempoAgotado) out={r:FRASES.tempo_esgotado,tipo:'inactivo'};
     else if(pausado) out={r:FRASES.pausado,tipo:'inactivo'};
-    else if(!nomeado(texto)) out={r:ao_chou(FRASES.sen_nome),tipo:'sen_nome'};
+    else if(!RESPOSTA_SEN_NOME&&!nomeado(texto)) out={r:ao_chou(FRASES.sen_nome),tipo:'sen_nome'};
     else{
       let p=it.proba;
       const pend=PRUEBAS.filter(x=>!estado.resueltas.includes(x.id));

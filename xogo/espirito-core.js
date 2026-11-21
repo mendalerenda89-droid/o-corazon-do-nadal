@@ -103,7 +103,7 @@ export const FRASES = {
   xa_bloqueada: "Esta proba segue conxelada. Agardade {s} segundos.",
   xa_resolta: "Esa proba xa a superastes. Seguide coas demais!",
   cal_proba: "De que proba me falades? Dicídeme o seu nome e a solución.",
-  sen_solucion: "Non escoitei a solución. Dicídeme: espírito, a solución da proba tal é...",
+  sen_solucion: "Non escoitei a solución. Dicídeme, por exemplo: solución da proba 2, sete.",
 };
 // ════════════════════════════════════════════════════════════════
 
